@@ -1,0 +1,27 @@
+{
+  "name": "zcserver",
+  "version": "1.0.0",
+  "description": "zcserver",
+  "main": "index.js",
+  "dependencies": {
+    "nodemailer": "^1.3.4",
+    "mongoose": "^4.0.3",
+    "socket.io": "^1.3.5",
+    "bson": "^0.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiumogaoao/zcserver.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jiumogaoao/zcserver/issues"
+  },
+  "homepage": "https://github.com/jiumogaoao/zcserver#readme"
+}
