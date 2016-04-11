@@ -3,12 +3,11 @@ var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter(); 
 var catchs = {};
 var callBackFn = function(data){}
-var server = {
- 		product : require('./demo')
-   }
+
 event.on('server', function() {
-	if(catchs.model&&catchs.action){
-		if(server[catchs.model]&&server[catchs.model][catchs.action]){
+	console.log("server");
+	if(catchs.model&&catchs.action){console.log(catchs);
+		if(server[catchs.model]&&server[catchs.model][catchs.action]){console.log("actionFind");
 			server[catchs.model][catchs.action](null,catchs,callBackFn);
 			}
 		
