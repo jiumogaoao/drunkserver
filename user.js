@@ -44,7 +44,7 @@
 		message:""};
 	var returnFn=function(){
 		if(socket){
-	 	socket.emit("client_getToken",result);
+	 	socket.emit("user_getToken",result);
 	 }
 	 	else if(fn){
 	 		var returnString = JSON.stringify(result);

@@ -70,6 +70,33 @@ smtpTransport.sendMail(mailOptions, function(error, info){
 });
 }
 /***********************************************************************************/
+tool.factory=function(modelName,actionName,mainFn){
+
+  var returnFn=function(socket,data,fn){
+      console.log(modelName+"/"+actionName);
+      if(typeof(data.data)=="string"){
+        data.data=JSON.parse(data.data)
+        }
+      console.log(data.data);
+      var result={code:0,
+        time:0,
+        data:{},
+        success:false,
+        message:""};
+      var returnFn=function(){
+        if(socket){
+        socket.emit(modelName+"_"+actionName,result);
+       }
+        else if(fn){
+          var returnString = JSON.stringify(result);
+          fn(returnString);
+        }
+      }
+      mainFn(socket,data);
+  }
+  return returnFn;
+}
+/***********************************************************************************/
 	global.tokenArry={}; 
 /***********************************************************************************/
 var showDB=function(){

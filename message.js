@@ -44,7 +44,7 @@
 				message:""};
 			var returnFn=function(){
 				if(socket){
-			 	socket.emit("getList_getList",result);
+			 	socket.emit("message_getList",result);
 			 }
 			 	else if(fn){
 			 		var returnString = JSON.stringify(result);
@@ -95,7 +95,7 @@
 				message:""};
 			var returnFn=function(){
 				if(socket){
-			 	socket.emit("getList_getGroupList",result);
+			 	socket.emit("message_getGroupList",result);
 			 }
 			 	else if(fn){
 			 		var returnString = JSON.stringify(result);
@@ -146,7 +146,7 @@
 				message:""};
 			var returnFn=function(){
 				if(socket){
-			 	socket.emit("getList_getMessageList",result);
+			 	socket.emit("message_getMessageList",result);
 			 }
 			 	else if(fn){
 			 		var returnString = JSON.stringify(result);
@@ -205,7 +205,7 @@
 				message:""};
 			var returnFn=function(){
 				if(socket){
-			 	socket.emit("getList_add",result);
+			 	socket.emit("message_add",result);
 			 }
 			 	else if(fn){
 			 		var returnString = JSON.stringify(result);
