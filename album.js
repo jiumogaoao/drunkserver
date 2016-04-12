@@ -9,13 +9,13 @@
 			db.save();
 		},5000);
 	}
+	var modelName=_.last(__filename.split("/")).split(".")[0];
 	var get=function(){
 		if(!inited){/*没初始，先初始*/
-			var filename=_.last(__filename.split("/"));
-			data_mg.findOne({id:filename},function(err,doc){
+			data_mg.findOne({id:modelName},function(err,doc){
 				if(err||!doc){
-					db=new data_mg({id:"user",data:{}});
-					newData.save(function(err){
+					db=new data_mg({id:modelName,data:{}});
+					db.save(function(err){
 						if(err){
 							console.log(err);
 						}else{
@@ -30,231 +30,69 @@
 				};
 	}
 	get();
-	function creat(socket,data,fn,end){
-		console.log("album/creat");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_creat",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var self=tokenArry[data.data.tk];
-			if(!data.data.aid&&!end){
-				data.data.aid=tool.uuid();
+	/**************************************************************/
+	/*创建相册*/
+	function creatFn(data,successFn,errFn){
+		var self=tokenArry[data.tk];
+			if(!data.aid&&!end){
+				data.aid=tool.uuid();
 			};
-			cache[data.data.aid]={
-				id:data.data.aid,
-				name:data.data.name,
+			cache[data.aid]={
+				id:data.aid,
+				name:data.name,
 				icon:"",
-				dsc:data.data.dsc,
+				dsc:data.dsc,
 				user:self.id,
-				type:data.data.type,
+				type:data.type,
 				time:new Date().getTime(),
 				list:[]
 			};
-
-				if(end){
-					result.data=cache[data.data.aid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.creatAlbum(socket,data,fn,true);	
-				}
-
-		};
-		/*删除相册*/
-		function remove(socket,data,fn,end){
-			console.log("album/remove");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_remove",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			delete cache[data.data.aid];
-			
-				if(end){
-					result.data=null;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.removeAlbum(socket,data,fn,true);	
-				}
-			
-		};
-		/*添加图片*/
-		function addPic(socket,data,fn){
-			console.log("album/addPic");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_addPic",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			cache[data.data.aid].list.push({
+		successFn(cache[data.aid]);
+	};
+	var creat=new tool.factory(exports,modelName,"creat",creatFn,"user","creatAlbum");
+	/**************************************************************/
+	/*删除相册*/
+	function removeFn(data,successFn,errFn){
+		delete cache[data.aid];
+		successFn(true);
+	};
+	var remove=new tool.factory(exports,modelName,"remove",removeFn,"user","removeAlbum");
+	/**************************************************************/
+	/*添加图片*/
+	function addPicFn(data,successFn,errFn){
+		cache[data.aid].list.push({
 				id:tool.uuid(),
-				src:data.data.src,
+				src:data.src,
 				time:new Date().getTime(),
 				name:""
 			});
-			result.data=cache[data.data.aid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		};
-		/*删除图片*/
-		function removePic(socket,data,fn){
-			console.log("album/removePic");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_removePic",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			cache[data.data.aid].list=_.reject(cache[data.data.aid].list,{id:data.data.pid});
-			result.data=cache[data.data.aid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		};
-		/*获取相册列表*/
-		function getAlbumList(socket,data,fn){
-			console.log("album/getAlbumList");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_getAlbumList",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var self=tokenArry[data.data.tk];
-			if(!data.data.uid){
-				data.data.uid=self.id;
+		successFn(cache[data.aid]);
+	};
+	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn);
+	/**************************************************************/
+	/*删除图片*/
+	function removePicFn(data,successFn,errFn){
+		cache[data.aid].list=_.reject(cache[data.aid].list,{id:data.pid});
+		successFn(cache[data.aid]);
+	};
+	var removePic=new tool.factory(exports,modelName,"removePic",removePicFn);
+	/**************************************************************/
+	/*获取相册列表*/
+	function getAlbumListFn(data,successFn,errFn){
+		var self=tokenArry[data.tk];
+			if(!data.uid){
+				data.uid=self.id;
 			}
 			var showList=_.filter(cache,function(point){
-				return point.user==data.data.uid
+				return point.user==data.uid
 			});
-			result.data=showList;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		}
-
-		/*设置封面*/
-		function setIcon(socket,data,fn){
-			console.log("album/setIcon");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("album_setIcon",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			cache[data.data.aid].icon=data.data.url;
-			result.data=cache[data.data.aid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		};
-		exports.creat=function(socket,data,fn,end){
-			creat(socket,data,fn,end);
-		};
-		exports.remove=function(socket,data,fn,end){
-			remove(socket,data,fn,end);
-		};
-		exports.addPic=function(socket,data,fn){
-			addPic(socket,data,fn);
-		}
-		exports.removePic=function(socket,data,fn){
-			removePic(socket,data,fn);
-		}
-		exports.getAlbumList=function(socket,data,fn){
-			getAlbumList(socket,data,fn);
-		}
-		exports.setIcon=function(socket,data,fn){
-			setIcon(socket,data,fn);
-		}
+		successFn(showList);
+	};
+	var getAlbumList=new tool.factory(exports,modelName,"getAlbumList",getAlbumListFn);
+	/**************************************************************/
+	/*设置封面*/
+	function setIconFn(data,successFn,errFn){
+		cache[data.aid].icon=data.url;
+		successFn(cache[data.aid]);
+	};
+	var setIcon=new tool.factory(exports,modelName,"setIcon",setIconFn);

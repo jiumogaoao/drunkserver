@@ -2,6 +2,11 @@
 //var router = require("./router");
 //server.start(router.route);
 
+   var dbURL="mongodb://127.0.0.1:27017/drunk"
+   global.db = require("mongoose").connect(dbURL);
+   global.data_mg = {}
+   data_mg = require('./data/models/drunk');
+/**********************************************************************************/   
 var app = require('./server')
   , router = require('./router')
    , url = require("url")
@@ -9,19 +14,6 @@ var app = require('./server')
    crypto = require('crypto'),
    nodemailer = require("nodemailer");
 	global._ = require("underscore")._;
-/************************************************************************/
-   global.server = {
-   	user : require('./user'),
-      group : require('./group'),
-      album : require('./album'),
-      message : require('./message'),
-      zone : require('./zone')
-   }
-/**********************************************************************************/
-   var dbURL="mongodb://127.0.0.1:27017/drunk"
-   global.db = require("mongoose").connect(dbURL);
-   global.data_mg = {}
-      data_mg = require('./data/models/drunk');
 /***********************************************************************************/
 	global.tool = {};
 	tool.uuid=function(){
@@ -70,9 +62,11 @@ smtpTransport.sendMail(mailOptions, function(error, info){
 });
 }
 /***********************************************************************************/
-tool.factory=function(modelName,actionName,mainFn){
-
-  var returnFn=function(socket,data,fn){
+tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
+  if(!exports||!modelName||!actionName||!mainFn){
+    return false;
+  }
+  var fn=function(socket,data,fn,end){
       console.log(modelName+"/"+actionName);
       if(typeof(data.data)=="string"){
         data.data=JSON.parse(data.data)
@@ -92,12 +86,49 @@ tool.factory=function(modelName,actionName,mainFn){
           fn(returnString);
         }
       }
-      mainFn(socket,data);
+      function errFn(err,message){
+        result.success=false;
+        console.log(err);
+        result.message=message;
+        returnFn();
+      }
+      function successFn(returnData){
+          if(linkModel&&linkAction){
+            if(end){
+            result.data=returnData;
+            result.success=true;
+            result.code=1;
+            result.time=new Date().getTime();
+            console.log(result)
+            returnFn();
+          }else{
+            server[linkModel][linkAction](socket,data,fn,true);  
+          }
+        }else{
+          result.data=returnData;
+            result.success=true;
+            result.code=1;
+            result.time=new Date().getTime();
+            console.log(result)
+            returnFn();
+        }
+      }
+      mainFn(data.data,successFn,errFn);
   }
-  return returnFn;
+  exports[actionName]=function(socket,data,fn){
+    fn(socket,data,fn,end);
+  }
 }
 /***********************************************************************************/
 	global.tokenArry={}; 
+/************************************************************************/
+   global.server = {
+    user : require('./user'),
+      group : require('./group'),
+      album : require('./album'),
+      message : require('./message'),
+      zone : require('./zone')
+   }
 /***********************************************************************************/
 var showDB=function(){
 

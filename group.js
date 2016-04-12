@@ -1,4 +1,5 @@
-var cache={};
+
+	var cache={};
 	var db={};
 	var inited=false;
 	var initEnd=function(){
@@ -8,13 +9,13 @@ var cache={};
 			db.save();
 		},5000);
 	}
+	var modelName=_.last(__filename.split("/")).split(".")[0];
 	var get=function(){
 		if(!inited){/*没初始，先初始*/
-			var filename=_.last(__filename.split("/"));
-			data_mg.findOne({id:filename},function(err,doc){
+			data_mg.findOne({id:modelName},function(err,doc){
 				if(err||!doc){
-					db=new data_mg({id:"user",data:{}});
-					newData.save(function(err){
+					db=new data_mg({id:modelName,data:{}});
+					db.save(function(err){
 						if(err){
 							console.log(err);
 						}else{
@@ -29,40 +30,22 @@ var cache={};
 				};
 	}
 	get();
+	/**************************************************************/
 	/*创建组*/
-		function add(socket,data,fn,end){
-			if(!inited){
+	function addFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/add");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_add",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
+		if(!data.gid&&!end){
+				data.gid=tool.uuid();
 			}
-			if(!data.data.gid&&!end){
-				data.data.gid=tool.uuid();
-			}
-			var self=tokenArry[data.data.tk];
-			cache[data.data.gid]={
-				id:data.data.gid,
-				name:data.data.name,
+			var self=tokenArry[data.tk];
+			cache[data.gid]={
+				id:data.gid,
+				name:data.name,
 				dsc:"",
-				icon:data.data.icon,
+				icon:data.icon,
 				type:0,
 				file:[],
 				album:[],
@@ -74,277 +57,99 @@ var cache={};
 				app:[],
 				member:[{id:self.id,nickName:"",type:"owner"}]
 			};
-			
-				if(end){
-					result.data=cache[data.data.gid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.creatGroup(socket,data,fn,true);	
-				}
-			
-		};
-		function join(socket,data,fn,end){
-			if(!inited){
+		successFn(cache[data.gid]);
+	};
+	var add=new tool.factory(exports,modelName,"add",addFn,"user","creatGroup");
+	/**************************************************************/
+	/*加入组*/
+	function joinFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/join");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_join",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
+		if(!data.gid&&!end){
+				data.gid=tool.uuid();
 			}
-			if(!data.data.gid&&!end){
-				data.data.gid=tool.uuid();
+			var self=tokenArry[data.tk];
+			if(!data.uid){
+				data.uid=self.id
 			}
-			var self=tokenArry[data.data.tk];
-			if(!data.data.uid){
-				data.data.uid=self.id
-			}
-			cache[data.data.gid].member.push({id:data.data.uid,nickName:"",type:"owner"});
-			
-				if(end){
-					result.data=cache[data.data.gid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.joinGroup(socket,data,fn,true);	
-				}
-			
-		};
-		function out(socket,data,fn,end){
-			if(!inited){
+			cache[data.gid].member.push({id:data.uid,nickName:"",type:"owner"});
+		successFn(cache[data.gid]);
+	};
+	var join=new tool.factory(exports,modelName,"join",joinFn,"user","joinGroup");
+	/**************************************************************/
+	/*退出组*/
+	function outFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/out");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_out",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var self=tokenArry[data.data.tk];
-			cache[data.data.gid].member=_.reject(cache[data.data.gid].member,{id:data.data.uid});
-			
-				if(end){
-					result.data=cache[data.data.gid];
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.outGroup(socket,data,fn,true);	
-				}
-			
-		};
-		function addAdmin(socket,data,fn,end){
-			if(!inited){
+		var self=tokenArry[data.tk];
+		cache[data.gid].member=_.reject(cache[data.gid].member,{id:data.uid});
+		successFn(cache[data.gid]);
+	};
+	var out=new tool.factory(exports,modelName,"out",outFn,"user","outGroup");
+	/**************************************************************/
+	/*添加管理员*/
+	function addAdminFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/addAdmin");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_addAdmin",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var returnObj=_.findWhere(cache[data.data.gid].member,{id:data.data.uid});
+		var returnObj=_.findWhere(cache[data.gid].member,{id:data.uid});
 			returnObj.type="admin";
-			
-				if(end){
-					result.data=returnObj;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.addAdminGroup(socket,data,fn,true);	
-				}
-			
-		};
-		function cancelAdmin(socket,data,fn,end){
-			if(!inited){
+		successFn(returnObj);
+	};
+	var addAdmin=new tool.factory(exports,modelName,"addAdmin",addAdminFn,"user","addAdminGroup");
+	/**************************************************************/
+	/*去除管理员*/
+	function cancelAdminFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/cancelAdmin");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_cancelAdmin",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var returnObj=_.findWhere(cache[data.data.gid].member,{id:data.data.uid});
+		var returnObj=_.findWhere(cache[data.gid].member,{id:data.uid});
 			returnObj.type="member";
-			
-				if(end){
-					result.data=returnObj;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-				}else{
-					server.user.cancelAdminGroup(socket,data,fn,true);	
-				}
-			
-		};
-		function searchNotGroup(socket,data,fn){
-			var self=tokenArry[data.data.tk];
-			if(!inited){
+		successFn(returnObj);
+	};
+	var cancelAdmin=new tool.factory(exports,modelName,"cancelAdmin",cancelAdminFn,"user","cancelAdminGroup");
+	/**************************************************************/
+	/*搜索没进的组*/
+	function searchNotGroupFn(data,successFn,errFn){
+		var self=tokenArry[data.tk];
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/searchNotGroup");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_searchNotGroup",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var returnList=_.reject(cache, function(point){
+		var returnList=_.reject(cache, function(point){
 			 return _.some(point.member,{id:self.id}); 
 			});
-			result.data=returnList;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-			
-		}
-		function getList(socket,data,fn){
-			if(!inited){
+		successFn(returnList);
+	};
+	var searchNotGroup=new tool.factory(exports,modelName,"searchNotGroup",searchNotGroupFn);
+	/**************************************************************/
+	/*获取组信息*/
+	function getListFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/getList");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_getList",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var returnObj={};
-			_.each(data.data.idArry,function(point){
+		var returnObj={};
+			_.each(data.idArry,function(point){
 				returnObj[point]=_.pick(cache[point],"id","name","dsc","type","icon");
 			});
-			result.data=returnObj;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		}
-		function getMyList(socket,data,fn){
-			if(!inited){
+		successFn(returnObj);
+	};
+	var getList=new tool.factory(exports,modelName,"getList",getListFn);
+	/**************************************************************/
+	/*获取自己组信息*/
+	function getMyListFn(data,successFn,errFn){
+		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-			console.log("group/getMyList");
-			if(typeof(data.data)=="string"){
-				data.data=JSON.parse(data.data)
-				}
-			console.log(data.data);
-			var result={code:0,
-				time:0,
-				data:{},
-				success:false,
-				message:""};
-			var returnFn=function(){
-				if(socket){
-			 	socket.emit("group_getMyList",result);
-			 }
-			 	else if(fn){
-			 		var returnString = JSON.stringify(result);
-			 		fn(returnString);
-			 	}
-			}
-			var self=tokenArry[data.data.tk];
+		var self=tokenArry[data.tk];
 			var list=_.filter(cache,function(point){
 				return _.some(point.member,{id:self.id});
 			});
@@ -355,36 +160,6 @@ var cache={};
 			returnObj=_.groupBy(returnObj,function(point){
 				return _.findWhere(point.member,{id:self.id}).type;
 			});
-
-			result.data=returnObj;
-					result.success=true;
-					result.code=1;
-					result.time=new Date().getTime();
-					console.log(result)
-					returnFn();
-		}
-		module.exports.add=function(socket,data,fn,end){
-			add(socket,data,fn,end);
-		};
-		module.exports.join=function(socket,data,fn,end){
-			join(socket,data,fn,end);
-		};
-		module.exports.out=function(socket,data,fn,end){
-			out(socket,data,fn,end);
-		};
-		module.exports.addAdmin=function(socket,data,fn,end){
-			addAdmin(socket,data,fn,end);
-		};
-		module.exports.cancelAdmin=function(socket,data,fn,end){
-			cancelAdmin(socket,data,fn,end);
-		};
-		module.exports.searchNotGroup=function(socket,data,fn){
-			searchNotGroup(socket,data,fn);
-		}
-		module.exports.getList=function(socket,data,fn){
-			getList(socket,data,fn);
-		}
-		module.exports.getMyList=function(socket,data,fn){
-			getMyList(socket,data,fn);
-		}
-
+		successFn(returnObj);
+	};
+	var getMyList=new tool.factory(exports,modelName,"getMyList",getMyListFn);	

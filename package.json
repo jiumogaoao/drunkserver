@@ -1,27 +1,20 @@
 {
-  "name": "zcserver",
+  "name": "drunkServer",
   "version": "1.0.0",
-  "description": "zcserver",
+  "description": "",
   "main": "index.js",
-  "dependencies": {
-    "nodemailer": "^1.3.4",
-    "socket.io": "^1.3.5",
-    "bson": "^0.3.2",
-    "mongoose": "^4.0.6"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jiumogaoao/zcserver.git"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jiumogaoao/zcserver/issues"
-  },
-  "homepage": "https://github.com/jiumogaoao/zcserver#readme"
+  "devDependencies": {
+  "querystring": "latest",
+  "crypto": "latest",
+  "nodemailer": "latest",
+  "underscore": "latest",
+    "mongoose": "latest",
+    "socket.io": "latest"
+  }
 }
+
