@@ -117,7 +117,7 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
       }
       mainFn(data.data,successFn,errFn);
   }
-  exports[actionName]=function(socket,data,fn,end){console.log(9)
+  exports[actionName]=function(socket,data,fn,end){
     main(socket,data,fn,end);
   }
 }
@@ -133,21 +133,23 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
    }
 /***********************************************************************************/
 var showDB=function(){
-
-}
-/****************************************************************************************/	 
-var initDB=function(){
-
+  data_mg.find({},function(err,doc){
+    console.log(doc)
+    app.target.listen(8888);
+    console.log("Server has started.");
+  })
 }
 /***********************************************************************************/
 var emptyDB=function(){
-
+  data_mg.remove({},function(err){
+    showDB();
+  });
 }
 	//emptyDB();
 	showDB();
 /***********************************************************************************/	
  	 var io = require('socket.io').listen(app.target)
-	app.target.listen(8888);
+	
  
  io.sockets.on('connection', function (socket) {
  	console.log("连上了");

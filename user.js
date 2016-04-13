@@ -3,13 +3,14 @@
 	var db={};
 	var inited=false;
 	var initEnd=function(){
-		cache=db.data;
+		cache=db.data||{};
+		console.log("initEnd:"+cache)
 		inited=true;
 		var save=setInterval(function(){
 			db.save();
 		},5000);
 	}
-	var modelName=_.last(__filename.split("/")).split(".")[0];
+	var modelName=_.last(__filename.split("\\")).split(".")[0];
 	var get=function(){
 		if(!inited){/*没初始，先初始*/
 			data_mg.findOne({id:modelName},function(err,doc){
@@ -32,7 +33,7 @@
 	get();
 	/**************************************************************/
 	/*获取token*/
-	function getTokenFn(data,successFn,errFn){console.log(0)
+	function getTokenFn(data,successFn,errFn){
 		console.log(tokenArry);
 	if(data.tk&&tokenArry[data.tk]){
 		console.log("有传入tk,且已有");
@@ -51,7 +52,7 @@
 		console.log("tk失效");
 		delete tokenArry[tokenA];
 		},1000*60*60*2);
-		successFn({tk:data.tk,user:null});
+		successFn({tk:tokenA,user:null});
 			}
 	}
 	var getToken=new tool.factory(exports,modelName,"getToken",getTokenFn);
@@ -85,6 +86,7 @@
 		if(_.findWhere(cache,{name:data.name})){
 				errFn("帐号已有","帐号已有");
 			}else{/*写入*/
+				console.log("cache:"+cache);
 				var newId=tool.uuid();
 				cache[newId]={
 					id:newId,
@@ -431,7 +433,7 @@
 				addObj.time=point.time;
 				returnObj.reject.push(addObj);
 			});
-		successFn(returnList);
+		successFn(returnObj);
 	};
 	var getFriendList=new tool.factory(exports,modelName,"getFriendList",getFriendListFn);
 	/********************************************************************/
