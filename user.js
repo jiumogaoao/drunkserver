@@ -32,7 +32,7 @@
 	get();
 	/**************************************************************/
 	/*获取token*/
-	function getTokenFn(data,successFn,errFn){
+	function getTokenFn(data,successFn,errFn){console.log(0)
 		console.log(tokenArry);
 	if(data.tk&&tokenArry[data.tk]){
 		console.log("有传入tk,且已有");

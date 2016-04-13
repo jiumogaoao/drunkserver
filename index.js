@@ -66,7 +66,7 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
   if(!exports||!modelName||!actionName||!mainFn){
     return false;
   }
-  var fn=function(socket,data,fn,end){
+  var main=function(socket,data,fn,end){
       console.log(modelName+"/"+actionName);
       if(typeof(data.data)=="string"){
         data.data=JSON.parse(data.data)
@@ -93,6 +93,8 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
         returnFn();
       }
       function successFn(returnData){
+          console.log("linkModel"+linkModel);
+          console.log("linkAction"+linkAction);
           if(linkModel&&linkAction){
             if(end){
             result.data=returnData;
@@ -115,8 +117,8 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
       }
       mainFn(data.data,successFn,errFn);
   }
-  exports[actionName]=function(socket,data,fn){
-    fn(socket,data,fn,end);
+  exports[actionName]=function(socket,data,fn,end){console.log(9)
+    main(socket,data,fn,end);
   }
 }
 /***********************************************************************************/
