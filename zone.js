@@ -3,13 +3,17 @@
 	var db={};
 	var inited=false;
 	var initEnd=function(){
-		cache=db.data;
+		cache=db.data||{};
 		inited=true;
 		var save=setInterval(function(){
-			db.save();
+			data_mg.update({id:modelName},{$set:{data:cache}},function(err,doc){
+				if(err){
+				console.log(err)	
+				}
+			});
 		},5000);
 	}
-	var modelName=_.last(__filename.split("/")).split(".")[0];
+	var modelName=_.last(__filename.split("\\")).split(".")[0];
 	var get=function(){
 		if(!inited){/*没初始，先初始*/
 			data_mg.findOne({id:modelName},function(err,doc){
@@ -39,7 +43,7 @@
 					return friendPoind.id==point.user
 				}))
 			});
-			if(returnList&&returnList.length){
+			if(returnList){
 				successFn(returnList);
 			}else{
 				errFn("获取空间信息出错","获取空间信息出错");

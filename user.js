@@ -4,10 +4,13 @@
 	var inited=false;
 	var initEnd=function(){
 		cache=db.data||{};
-		console.log("initEnd:"+cache)
 		inited=true;
 		var save=setInterval(function(){
-			db.save();
+			data_mg.update({id:modelName},{$set:{data:cache}},function(err,doc){
+				if(err){
+				console.log(err)	
+				}
+			});
 		},5000);
 	}
 	var modelName=_.last(__filename.split("\\")).split(".")[0];

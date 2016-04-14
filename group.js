@@ -3,13 +3,17 @@
 	var db={};
 	var inited=false;
 	var initEnd=function(){
-		cache=db.data;
+		cache=db.data||{};
 		inited=true;
 		var save=setInterval(function(){
-			db.save();
+			data_mg.update({id:modelName},{$set:{data:cache}},function(err,doc){
+				if(err){
+				console.log(err)	
+				}
+			});
 		},5000);
 	}
-	var modelName=_.last(__filename.split("/")).split(".")[0];
+	var modelName=_.last(__filename.split("\\")).split(".")[0];
 	var get=function(){
 		if(!inited){/*没初始，先初始*/
 			data_mg.findOne({id:modelName},function(err,doc){
@@ -37,7 +41,7 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-		if(!data.gid&&!end){
+		if(!data.gid){
 				data.gid=tool.uuid();
 			}
 			var self=tokenArry[data.tk];
@@ -67,7 +71,7 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-		if(!data.gid&&!end){
+		if(!data.gid){
 				data.gid=tool.uuid();
 			}
 			var self=tokenArry[data.tk];

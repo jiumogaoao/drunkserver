@@ -30,10 +30,11 @@ function route(request,fn) {
 		params.ip=getClientIp(request);
 		console.log(params)
         event.catchs(params);
-
+        event.run('server')
     }else{
         var postdata = "";
         request.addListener("data",function(postchunk){
+            console.log("postchunk"+postchunk);
             postdata += postchunk;
         })
 
@@ -43,9 +44,10 @@ function route(request,fn) {
             params['fruit'] = compute(params);
 			params.ip=getClientIp(request);
             event.catchs(params);
+            event.run('server')
         })
     }
-event.run('server')
+
 
 }
 
