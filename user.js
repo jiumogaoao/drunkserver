@@ -230,7 +230,7 @@
 		cache[data.id].praise.push(data.zid);
 		successFn(tokenArry[data.tk]);
 	};
-	var praise=new tool.factory(exports,modelName,"praise",praiseFn,"zone","praise");
+	var praise=new tool.factory(exports,modelName,"praise",praiseFn,"zone","praise",true);
 	/********************************************************************/
 	/*取消赞*/
 	function cancelPraiseFn(data,successFn,errFn){
@@ -241,7 +241,7 @@
 		cache[data.id].praise=_.without(cache[data.id].praise,data.zid);
 		successFn(tokenArry[data.tk]);	
 	};
-	var cancelPraise=new tool.factory(exports,modelName,"cancelPraise",cancelPraiseFn,"zone","cancelPraise");
+	var cancelPraise=new tool.factory(exports,modelName,"cancelPraise",cancelPraiseFn,"zone","cancelPraise",true);
 	/********************************************************************/
 	/*关注*/
 	function attentionFn(data,successFn,errFn){
@@ -252,7 +252,7 @@
 		cache[data.id].attention.push(data.zid);
 		successFn(tokenArry[data.tk]);	
 	};
-	var attention=new tool.factory(exports,modelName,"attention",attentionFn,"zone","attention");
+	var attention=new tool.factory(exports,modelName,"attention",attentionFn,"zone","attention",true);
 	/********************************************************************/
 	/*取消关注*/
 	function cancelAttentionFn(data,successFn,errFn){
@@ -263,7 +263,7 @@
 		cache[data.id].attention=_.without(cache[data.id].attention,data.zid);
 		successFn(tokenArry[data.tk]);	
 	};
-	var cancelAttention=new tool.factory(exports,modelName,"cancelAttention",cancelAttentionFn,"zone","cancelAttention");
+	var cancelAttention=new tool.factory(exports,modelName,"cancelAttention",cancelAttentionFn,"zone","cancelAttention",true);
 	/********************************************************************/
 	/*看了*/
 	function readedFn(data,successFn,errFn){
@@ -274,7 +274,7 @@
 		cache[data.id].readed.push(data.zid);
 		successFn(tokenArry[data.tk]);	
 	};
-	var readed=new tool.factory(exports,modelName,"readed",readedFn,"zone","readed");
+	var readed=new tool.factory(exports,modelName,"readed",readedFn,"zone","readed",true);
 	/********************************************************************/
 	/*分享*/
 	function shareFn(data,successFn,errFn){
@@ -285,7 +285,7 @@
 		cache[data.id].share.push(data.zid);
 		successFn(tokenArry[data.tk]);	
 	};
-	var share=new tool.factory(exports,modelName,"share",shareFn,"zone","share");
+	var share=new tool.factory(exports,modelName,"share",shareFn,"zone","share",true);
 	/********************************************************************/
 	/*回复*/
 	function replyFn(data,successFn,errFn){
@@ -296,7 +296,7 @@
 		cache[data.id].reply.push({form:data.id,to:data.to,text:data.text,readed:false,time:new Date().getTime(),zid:data.zid});
 		successFn(tokenArry[data.tk]);	
 	};
-	var reply=new tool.factory(exports,modelName,"reply",replyFn,"zone","reply");
+	var reply=new tool.factory(exports,modelName,"reply",replyFn,"zone","reply",true);
 	/********************************************************************/
 	/*创建组*/
 	function creatGroupFn(data,successFn,errFn){
@@ -310,7 +310,7 @@
 		cache[tokenArry[data.tk].id].group.creat.push(data.gid);
 		successFn(tokenArry[data.tk]);
 	};
-	var creatGroup=new tool.factory(exports,modelName,"creatGroup",creatGroupFn,"group","add");
+	var creatGroup=new tool.factory(exports,modelName,"creatGroup",creatGroupFn,"group","add",true);
 	/********************************************************************/
 	/*加入组*/
 	function joinGroupFn(data,successFn,errFn){
@@ -324,7 +324,7 @@
 		cache[data.uid].group.member.push(data.gid);
 		successFn(tokenArry[data.tk]);
 	};
-	var joinGroup=new tool.factory(exports,modelName,"joinGroup",joinGroupFn,"group","join");
+	var joinGroup=new tool.factory(exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
 	/********************************************************************/
 	/*退出组*/
 	function outGroupFn(data,successFn,errFn){
@@ -337,7 +337,7 @@
 		cache[data.uid].group.admin=_.without(cache[data.uid].group.admin,data.gid);
 		successFn(tokenArry[data.tk]);
 	};
-	var outGroup=new tool.factory(exports,modelName,"outGroup",outGroupFn,"group","out");
+	var outGroup=new tool.factory(exports,modelName,"outGroup",outGroupFn,"group","out",true);
 	/********************************************************************/
 	/*添加管理员*/
 	function addAdminGroupFn(data,successFn,errFn){
@@ -349,7 +349,7 @@
 		cache[data.uid].group.admin.push(data.gid);
 		successFn(tokenArry[data.tk]);
 	};
-	var addAdminGroup=new tool.factory(exports,modelName,"addAdminGroup",addAdminGroupFn,"group","addAdmin");
+	var addAdminGroup=new tool.factory(exports,modelName,"addAdminGroup",addAdminGroupFn,"group","addAdmin",true);
 	/********************************************************************/
 	/*去除管理员*/
 	function cancelAdminGroupFn(data,successFn,errFn){
@@ -361,7 +361,7 @@
 		cache[data.uid].group.member.push(data.gid);
 		successFn(tokenArry[data.tk]);
 	};
-	var cancelAdminGroup=new tool.factory(exports,modelName,"cancelAdminGroup",cancelAdminGroupFn,"group","cancelAdmin");
+	var cancelAdminGroup=new tool.factory(exports,modelName,"cancelAdminGroup",cancelAdminGroupFn,"group","cancelAdmin",true);
 	/********************************************************************/	
 	/*创建相册*/
 	function creatAlbumFn(data,successFn,errFn){
@@ -372,7 +372,7 @@
 		cache[tokenArry[data.tk].id].album.push(data.aid);
 		successFn(tokenArry[data.tk]);
 	};
-	var creatAlbum=new tool.factory(exports,modelName,"creatAlbum",creatAlbumFn,"album","creat");
+	var creatAlbum=new tool.factory(exports,modelName,"creatAlbum",creatAlbumFn,"album","creat",true);
 	/********************************************************************/
 	/*删除相册*/
 	function removeAlbumFn(data,successFn,errFn){
@@ -383,7 +383,7 @@
 		cache[tokenArry[data.tk].id].album=_.without(cache[tokenArry[data.tk].id].album,data.aid);
 		successFn(tokenArry[data.tk]);
 	};
-	var removeAlbum=new tool.factory(exports,modelName,"removeAlbum",removeAlbumFn,"album","remove");
+	var removeAlbum=new tool.factory(exports,modelName,"removeAlbum",removeAlbumFn,"album","remove",true);
 	/********************************************************************/
 	/*搜索没添加的人*/
 	function searchNotFriendFn(data,successFn,errFn){

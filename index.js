@@ -62,11 +62,12 @@ smtpTransport.sendMail(mailOptions, function(error, info){
 });
 }
 /***********************************************************************************/
-tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
+tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,reactive){
   if(!exports||!modelName||!actionName||!mainFn){
     return false;
   }
-  var main=function(socket,data,fn,end){
+  var main=function(socket,data,fn,end,reactiveData){
+      console.log("reactiveData:"+reactiveData);
       console.log(modelName+"/"+actionName);
       if(typeof(data.data)=="string"){
         data.data=JSON.parse(data.data)
@@ -97,14 +98,22 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
           console.log("linkAction"+linkAction);
           if(linkModel&&linkAction){
             if(end){
-            result.data=returnData;
+            if(reactive){
+              result.data=reactiveData;
+            }else{
+              result.data=returnData;
+            }
             result.success=true;
             result.code=1;
             result.time=new Date().getTime();
             console.log(result)
             returnFn();
           }else{
-            server[linkModel][linkAction](socket,data,fn,true);  
+            var activeData={};
+            if(!reactive){
+              activeData=returnData;
+            }
+            server[linkModel][linkAction](socket,data,fn,true,activeData);  
           }
         }else{
           result.data=returnData;
@@ -117,8 +126,8 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction){
       }
       mainFn(data.data,successFn,errFn);
   }
-  exports[actionName]=function(socket,data,fn,end){
-    main(socket,data,fn,end);
+  exports[actionName]=function(socket,data,fn,end,reactiveData){
+    main(socket,data,fn,end,reactiveData);
   }
 }
 /***********************************************************************************/

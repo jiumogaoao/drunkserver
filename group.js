@@ -140,8 +140,11 @@
 				return false;
 			};
 		var returnObj={};
+		console.log(cache);
 			_.each(data.idArry,function(point){
-				returnObj[point]=_.pick(cache[point],"id","name","dsc","type","icon");
+				if(cache[point]){
+					returnObj[point]=_.pick(cache[point],"id","name","dsc","type","icon");
+				}
 			});
 		successFn(returnObj);
 	};
