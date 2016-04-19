@@ -95,8 +95,6 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,r
         returnFn();
       }
       function successFn(returnData){
-          console.log("linkModel"+linkModel);
-          console.log("linkAction"+linkAction);
           if(linkModel&&linkAction){
             if(end){
             if(reactive){
@@ -133,18 +131,13 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,r
 }
 /***********************************************************************************/
 tool.socket=function(toArry,eventName,data){
-  console.log("toArry:");
-  console.log(toArry);
   var sendArry=_.filter(tokenArry,function(point){
       return point.user&&_.some(toArry,function(to){
         return to===point.user.id;
       });
   });
-  console.log("to:")
-  console.log(sendArry)
   _.each(sendArry,function(send){
-    console.log('send')
-    if(send.socket){console.log('socket')
+    if(send.socket){
       send.socket.emit('event',{
         eventName:eventName,
         data:data
@@ -177,7 +170,9 @@ var emptyDB=function(){
   });
 }
 	//emptyDB();
-	showDB();
+	//showDB();
+  app.target.listen(8888);
+  console.log("Server has started.");
 /***********************************************************************************/	
  	 var io = require('socket.io').listen(app.target)
 	

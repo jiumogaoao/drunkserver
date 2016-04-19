@@ -23,18 +23,15 @@ function route(request,fn) {
     //判断是GET/POST请求
     event.callBackFn(fn);
     if(request.method == "GET"){
-		console.log("GET");
         var params = [];
         params = url.parse(request.url,true).query;
         params['fruit'] = compute(params);
 		params.ip=getClientIp(request);
-		console.log(params)
         event.catchs(params);
         event.run('server')
     }else{
         var postdata = "";
         request.addListener("data",function(postchunk){
-            console.log("postchunk"+postchunk);
             postdata += postchunk;
         })
 

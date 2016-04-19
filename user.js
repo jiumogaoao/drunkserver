@@ -37,20 +37,15 @@
 	/**************************************************************/
 	/*获取token*/
 	function getTokenFn(data,successFn,errFn){
-		console.log(tokenArry);
 	if(data.tk&&tokenArry[data.tk]){
-		console.log("有传入tk,且已有");
 		if(tokenArry[data.tk].user&&tokenArry[data.tk].user.id){
 			successFn({tk:data.tk,user:tokenArry[data.tk].user});
 		}else{
 			successFn({tk:data.tk,user:null});
 		}	
 		}else{
-		console.log("新tk");
 		var tokenA=data.tk||tool.uuid();
-		console.log(tokenA);
 		tokenArry[tokenA]={tk:tokenA};
-		console.log(tokenArry)
 	var clearTime=setTimeout(function(){
 		console.log("tk失效");
 		delete tokenArry[tokenA];
