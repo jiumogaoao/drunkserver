@@ -44,7 +44,7 @@
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
-			var self=tokenArry[data.tk];
+			var self=tokenArry[data.tk].user;
 			cache[data.gid]={
 				id:data.gid,
 				name:data.name,
@@ -74,7 +74,7 @@
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
-			var self=tokenArry[data.tk];
+			var self=tokenArry[data.tk].user;
 			if(!data.uid){
 				data.uid=self.id
 			}
@@ -89,7 +89,7 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 		cache[data.gid].member=_.reject(cache[data.gid].member,{id:data.uid});
 		successFn(cache[data.gid]);
 	};
@@ -121,7 +121,7 @@
 	/**************************************************************/
 	/*搜索没进的组*/
 	function searchNotGroupFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -156,7 +156,7 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var list=_.filter(cache,function(point){
 				return _.some(point.member,{id:self.id});
 			});

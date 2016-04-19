@@ -37,7 +37,7 @@
 	/**************************************************************/
 	/*创建相册*/
 	function creatFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			if(!data.aid){
 				data.aid=tool.uuid();
 			};
@@ -83,7 +83,7 @@
 	/**************************************************************/
 	/*获取相册列表*/
 	function getAlbumListFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			if(!data.uid){
 				data.uid=self.id;
 			}

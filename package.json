@@ -13,8 +13,9 @@
   "crypto": "latest",
   "nodemailer": "latest",
   "underscore": "latest",
-    "mongoose": "latest",
-    "socket.io": "latest"
+  "mongoose": "latest",
+  "moment": "latest",
+  "socket.io": "latest"
   }
 }
 

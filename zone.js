@@ -37,7 +37,7 @@
 	/**************************************************************/
 	/*获取聊天记录*/
 	function getListFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var returnList=_.filter(cache,function(point){
 				return (point.user==self.id||_.some(self.friend.checked,function(friendPoind){
 					return friendPoind.id==point.user
@@ -102,7 +102,7 @@
 	/**************************************************************/
 	/*发帖*/
 	function addFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={
 					id:newId,

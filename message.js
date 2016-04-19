@@ -1,4 +1,3 @@
-
 	var cache={};
 	var db={};
 	var inited=false;
@@ -37,7 +36,7 @@
 	/**************************************************************/
 	/*获取聊天记录*/
 	function getListFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var returnList=[];
 			_.each(cache,function(point){
 				if((point.from==self.id&&point.to==data.to&&point.state==0) || (point.to==self.id&&point.from==data.to&&point.state==0)){
@@ -63,7 +62,7 @@
 	/**************************************************************/
 	/*获取组聊天记录*/
 	function getGroupListFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var returnList=[];
 			_.each(cache,function(point){
 				if(point.to==data.to&&point.state==1){
@@ -89,7 +88,7 @@
 	/**************************************************************/
 	/*聊天列表*/
 	function getMessageListFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var returnList={};
 			_.each(cache,function(point){
 				if(((point.to==self.id||point.from==self.id)&&point.state==0)||((_.some(self.group.creat,point.to)||_.some(self.group.admin,point.to)||_.some(self.group.member,point.to))&&point.state==1)){
@@ -123,7 +122,7 @@
 	/**************************************************************/
 	/*聊天*/
 	function addFn(data,successFn,errFn){
-		var self=tokenArry[data.tk];
+		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={
 					id:newId,
@@ -137,5 +136,7 @@
 					main:data.main,
 					readed:false
 				};
+				tool.socket([data.to],"newMessage",cache[newId]);
 				successFn(cache[newId]);
 	};
+	var getMessageList=new tool.factory(exports,modelName,"add",addFn);

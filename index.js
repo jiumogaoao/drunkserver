@@ -14,6 +14,7 @@ var app = require('./server')
    crypto = require('crypto'),
    nodemailer = require("nodemailer");
 	global._ = require("underscore")._;
+  global.moment=require('moment');
 /***********************************************************************************/
 	global.tool = {};
 	tool.uuid=function(){
@@ -131,6 +132,27 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,r
   }
 }
 /***********************************************************************************/
+tool.socket=function(toArry,eventName,data){
+  console.log("toArry:");
+  console.log(toArry);
+  var sendArry=_.filter(tokenArry,function(point){
+      return point.user&&_.some(toArry,function(to){
+        return to===point.user.id;
+      });
+  });
+  console.log("to:")
+  console.log(sendArry)
+  _.each(sendArry,function(send){
+    console.log('send')
+    if(send.socket){console.log('socket')
+      send.socket.emit('event',{
+        eventName:eventName,
+        data:data
+      });
+    }
+  })
+};
+/***********************************************************************************/
 	global.tokenArry={}; 
 /************************************************************************/
    global.server = {
@@ -163,6 +185,10 @@ var emptyDB=function(){
  io.sockets.on('connection', function (socket) {
  	console.log("连上了");
    socket.emit('connected', { hello: 'world' });
+   socket.on('tk',function(data){
+    tokenArry[data.tk].socket=socket;
+    console.log('tk注册成功');
+   });
    socket.on('server',function(data){
    		if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
    			server[data.model][data.action](socket,data);
