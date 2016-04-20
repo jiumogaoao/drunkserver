@@ -169,6 +169,7 @@
 		if(!_.contains(cache[data.to].friend.reject, tokenArry[data.tk].user.id)){
 				tokenArry[data.tk].user.friend.request.push({id:data.to,time:new Date().getTime()});
 				cache[data.to].friend.response.push({id:tokenArry[data.tk].user.id,time:new Date().getTime()});
+				tool.socket([data.to],"newFriend",tokenArry[data.tk].user);
 				successFn(tokenArry[data.tk].user);
 			}else{
 				errFn("请求被拒绝","请求被拒绝");
@@ -185,6 +186,7 @@
 		cache[data.to].friend.reject.push({id:data.from,time:new Date().getTime()});
 			cache[data.from].friend.request=_.reject(cache[data.from].friend.request,{id:data.to});
 			cache[data.to].friend.response=_.reject(cache[data.from].friend.response,{id:data.from});
+			tool.socket([data.from],"newFriend",tokenArry[data.tk].user);
 			successFn(tokenArry[data.tk].user);
 	};
 	var rejectFriend=new tool.factory(exports,modelName,"rejectFriend",rejectFriendFn);
@@ -199,6 +201,7 @@
 			cache[data.to].friend.checked.push({id:tokenArry[data.tk].user.id,time:new Date().getTime(),groupId:"all"});
 			cache[data.to].friend.request=_.reject(cache[data.to].friend.request,{id:tokenArry[data.tk].user.id});
 			cache[tokenArry[data.tk].user.id].friend.response=_.reject(cache[tokenArry[data.tk].user.id].friend.response,{id:data.to});
+			tool.socket([data.to],"newFriend",tokenArry[data.tk].user);
 			successFn(tokenArry[data.tk].user);
 	};
 	var checkFriend=new tool.factory(exports,modelName,"checkFriend",checkFriendFn);
@@ -212,6 +215,7 @@
 			cache[data.to].friend.reject.push({id:data.from,time:new Date().getTime()});
 			cache[data.from].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.to});
 			cache[data.to].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.from});
+			tool.socket([data.from],"newFriend",tokenArry[data.tk].user);
 			successFn(tokenArry[data.tk].user);
 	};
 	var removeFriend=new tool.factory(exports,modelName,"removeFriend",removeFriendFn);
