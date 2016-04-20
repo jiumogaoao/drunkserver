@@ -44,6 +44,9 @@
 				}))
 			});
 			if(returnList){
+				returnList=_.sortBy(returnList,function(point){
+					return -1*point.time
+				});
 				successFn(returnList);
 			}else{
 				errFn("获取空间信息出错","获取空间信息出错");
@@ -118,6 +121,8 @@
 					share:[],
 					reply:[]	
 				};
+			var memberArry=_.pluck(self.friend.checked,"id");
+			tool.socket(memberArry,"newZone",cache[newId]);
 			successFn(cache[newId]);
 	}
 	var add=new tool.factory(exports,modelName,"add",addFn);

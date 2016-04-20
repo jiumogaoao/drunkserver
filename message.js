@@ -91,7 +91,7 @@
 		var self=tokenArry[data.tk].user;
 			var returnList={};
 			_.each(cache,function(point){
-				if(((point.to==self.id||point.from==self.id)&&point.state==0)||((_.some(self.group.creat,point.to)||_.some(self.group.admin,point.to)||_.some(self.group.member,point.to))&&point.state==1)){
+				if(((point.to==self.id||point.from==self.id)&&point.state==0)||((_.contains(self.group.creat,point.to)||_.contains(self.group.admin,point.to)||_.contains(self.group.member,point.to))&&point.state==1)){
 					if(point.state==0){
 						if(point.to==self.id){
 							if(!returnList[point.from]){
