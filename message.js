@@ -136,7 +136,23 @@
 					main:data.main,
 					readed:false
 				};
-				tool.socket([data.to],"newMessage",cache[newId]);
+				if(data.state==0){
+					tool.socket([data.to],"newMessage",cache[newId]);
+				}else if(data.state==1){
+					function memberGet(returnData){
+						returnData=JSON.parse(returnData);
+						var memberArry=[];
+						_.each(returnData.data,function(point){
+							_.each(point.member,function(pm){
+								if(pm.id!=self.id){
+									memberArry.push(pm.id)
+								}
+							})
+						});
+						tool.socket(memberArry,"newGroupMessage",cache[newId]);
+					}
+					server.group.getList(null,{data:{idArry:[data.to]}},memberGet);
+				}
 				successFn(cache[newId]);
 	};
 	var getMessageList=new tool.factory(exports,modelName,"add",addFn);
