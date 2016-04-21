@@ -72,7 +72,7 @@
 			});
 		successFn(cache[data.aid]);
 	};
-	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn);
+	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
 	/**************************************************************/
 	/*删除图片*/
 	function removePicFn(data,successFn,errFn){

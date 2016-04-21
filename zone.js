@@ -35,7 +35,7 @@
 	}
 	get();
 	/**************************************************************/
-	/*获取聊天记录*/
+	/*获取空间信息*/
 	function getListFn(data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
 			var returnList=_.filter(cache,function(point){
@@ -53,6 +53,23 @@
 			}
 	};
 	var getList=new tool.factory(exports,modelName,"getList",getListFn);
+	/**************************************************************/
+	/*获取自己的说说*/
+	function getMyListFn(data,successFn,errFn){
+		var self=tokenArry[data.tk].user;
+			var returnList=_.filter(cache,function(point){
+				return point.user==self.id
+			});
+			if(returnList){
+				returnList=_.sortBy(returnList,function(point){
+					return -1*point.time
+				});
+				successFn(returnList);
+			}else{
+				errFn("获取空间信息出错","获取空间信息出错");
+			}
+	};
+	var getMyList=new tool.factory(exports,modelName,"getMyList",getMyListFn);
 	/**************************************************************/
 	/*赞*/
 	function praiseFn(data,successFn,errFn){
@@ -109,6 +126,7 @@
 			var newId=tool.uuid();
 				cache[newId]={
 					id:newId,
+					type:0,
 					time:new Date().getTime(),
 					icon:self.icon,
 					name:self.name,
@@ -126,3 +144,52 @@
 			successFn(cache[newId]);
 	}
 	var add=new tool.factory(exports,modelName,"add",addFn);
+	/***************************************************************/
+	/*相册照片*/
+	function addAlbumPicFn(data,successFn,errFn){
+		var self=tokenArry[data.tk].user;
+			var newId=tool.uuid();
+				cache[newId]={
+					id:newId,
+					type:1,
+					time:new Date().getTime(),
+					icon:self.icon,
+					name:self.name,
+					user:self.id,
+					text:"",
+					pic:[{id:tool.uuid(),src:data.src}],
+					praise:[],
+					attention:[],
+					readed:[],
+					share:[],
+					reply:[]	
+				};
+			var memberArry=_.pluck(self.friend.checked,"id");
+			tool.socket(memberArry,"newZone",cache[newId]);
+			successFn(cache[newId]);
+	}
+	var addAlbumPic=new tool.factory(exports,modelName,"addAlbumPic",addAlbumPicFn,"album","addPic",true);
+	/*修改个性签名*/
+	function changeDscFn(data,successFn,errFn){
+		var self=tokenArry[data.tk].user;
+			var newId=tool.uuid();
+				cache[newId]={
+					id:newId,
+					type:2,
+					time:new Date().getTime(),
+					icon:self.icon,
+					name:self.name,
+					user:self.id,
+					text:data.dsc,
+					pic:[],
+					praise:[],
+					attention:[],
+					readed:[],
+					share:[],
+					reply:[]	
+				};
+			var memberArry=_.pluck(self.friend.checked,"id");
+			tool.socket(memberArry,"newZone",cache[newId]);
+			successFn(cache[newId]);
+	}
+	var changeDsc=new tool.factory(exports,modelName,"changeDsc",changeDscFn,"user","changeDsc",true);

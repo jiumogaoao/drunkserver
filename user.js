@@ -463,3 +463,11 @@
 		successFn(tokenArry[data.tk].user);
 	};
 	var changeIcon=new tool.factory(exports,modelName,"changeIcon",changeIconFn);
+	/********************************************************************/
+	/*修改个性签名*/
+	function changeDscFn(data,successFn,errFn){
+		cache[tokenArry[data.tk].user.id].dsc=data.dsc;
+		tokenArry[data.tk].user.dsc=data.dsc;
+		successFn(tokenArry[data.tk].user);
+	};
+	var changeDsc=new tool.factory(exports,modelName,"changeDsc",changeDscFn,"zone","changeDsc");
