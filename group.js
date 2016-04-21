@@ -44,6 +44,10 @@
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 			var self=tokenArry[data.tk].user;
 			cache[data.gid]={
 				id:data.gid,
@@ -74,6 +78,10 @@
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 			var self=tokenArry[data.tk].user;
 			if(!data.uid){
 				data.uid=self.id
@@ -89,6 +97,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 		cache[data.gid].member=_.reject(cache[data.gid].member,{id:data.uid});
 		successFn(cache[data.gid]);
@@ -101,6 +113,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var returnObj=_.findWhere(cache[data.gid].member,{id:data.uid});
 			returnObj.type="admin";
 		successFn(returnObj);
@@ -113,6 +129,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var returnObj=_.findWhere(cache[data.gid].member,{id:data.uid});
 			returnObj.type="member";
 		successFn(returnObj);
@@ -126,6 +146,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var returnList=_.reject(cache, function(point){
 			 return _.some(point.member,{id:self.id}); 
 			});
@@ -155,6 +179,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var list=_.filter(cache,function(point){
 				return _.some(point.member,{id:self.id});

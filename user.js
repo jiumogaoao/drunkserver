@@ -166,6 +166,10 @@
 				if(fn){fn(false);}
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		if(!_.contains(cache[data.to].friend.reject, tokenArry[data.tk].user.id)){
 				tokenArry[data.tk].user.friend.request.push({id:data.to,time:new Date().getTime()});
 				cache[data.to].friend.response.push({id:tokenArry[data.tk].user.id,time:new Date().getTime()});
@@ -183,6 +187,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.to].friend.reject.push({id:data.from,time:new Date().getTime()});
 			cache[data.from].friend.request=_.reject(cache[data.from].friend.request,{id:data.to});
 			cache[data.to].friend.response=_.reject(cache[data.from].friend.response,{id:data.from});
@@ -197,6 +205,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+			if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 			cache[tokenArry[data.tk].user.id].friend.checked.push({id:data.to,time:new Date().getTime(),groupId:"all"});
 			cache[data.to].friend.checked.push({id:tokenArry[data.tk].user.id,time:new Date().getTime(),groupId:"all"});
 			cache[data.to].friend.request=_.reject(cache[data.to].friend.request,{id:tokenArry[data.tk].user.id});
@@ -212,6 +224,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 			cache[data.to].friend.reject.push({id:data.from,time:new Date().getTime()});
 			cache[data.from].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.to});
 			cache[data.to].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.from});
@@ -226,6 +242,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].praise.push(data.zid);
 		successFn(tokenArry[data.tk].user);
 	};
@@ -237,6 +257,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].praise=_.without(cache[data.id].praise,data.zid);
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -248,6 +272,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].attention.push(data.zid);
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -259,6 +287,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].attention=_.without(cache[data.id].attention,data.zid);
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -270,6 +302,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].readed.push(data.zid);
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -281,6 +317,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].share.push(data.zid);
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -292,6 +332,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.id].reply.push({form:data.id,to:data.to,text:data.text,readed:false,time:new Date().getTime(),zid:data.zid});
 		successFn(tokenArry[data.tk].user);	
 	};
@@ -306,6 +350,10 @@
 		if(!data.gid&&!end){
 				data.gid=tool.uuid();
 			}
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].group.creat.push(data.gid);
 		successFn(tokenArry[data.tk].user);
 	};
@@ -317,6 +365,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		if(!data.uid){
 				data.uid=tokenArry[data.tk].user.id;
 			}
@@ -331,6 +383,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.uid].group.member=_.without(cache[data.uid].group.member,data.gid);
 		cache[data.uid].group.creat=_.without(cache[data.uid].group.creat,data.gid);
 		cache[data.uid].group.admin=_.without(cache[data.uid].group.admin,data.gid);
@@ -344,6 +400,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.uid].group.member=_.without(cache[tokenArry[data.tk].user.id].group.member,data.gid);
 		cache[data.uid].group.admin.push(data.gid);
 		successFn(tokenArry[data.tk].user);
@@ -356,6 +416,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[data.uid].group.admin=_.without(cache[tokenArry[data.tk].user.id].group.member,data.gid);
 		cache[data.uid].group.member.push(data.gid);
 		successFn(tokenArry[data.tk].user);
@@ -368,6 +432,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].album.push(data.aid);
 		successFn(tokenArry[data.tk].user);
 	};
@@ -379,6 +447,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].album=_.without(cache[tokenArry[data.tk].user.id].album,data.aid);
 		successFn(tokenArry[data.tk].user);
 	};
@@ -390,6 +462,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var returnList=[];
 			var searchList=_.reject(cache, function(point){
 			 return _.some(point.friend.checked,{id:tokenArry[data.tk].user.id})||point.id==tokenArry[data.tk].user.id; 
@@ -407,6 +483,10 @@
 				console.log("数据未同步成功，请稍后再试");
 				return false;
 			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var returnObj={
 				checked:[],
 				request:[],
@@ -441,6 +521,10 @@
 	/********************************************************************/
 	/*设置个人信息*/
 	function editDetailFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		data.editData=_.pick(data.editData,"name","sex","birthday","job","company","school","province","city","hometown","email","dsc");
 		cache[tokenArry[data.tk].user.id]=_.extend(cache[tokenArry[data.tk].user.id],data.editData);
 		tokenArry[data.tk].user=_.omit(cache[tokenArry[data.tk].user.id],"key");
@@ -450,6 +534,10 @@
 	/********************************************************************/
 	/*更换名片背景*/
 	function changeBackgroundFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].background=data.src;
 		tokenArry[data.tk].user.background=data.src;
 		successFn(tokenArry[data.tk].user);
@@ -458,6 +546,10 @@
 	/********************************************************************/
 	/*更换头像*/
 	function changeIconFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].icon=data.src;
 		tokenArry[data.tk].user.icon=data.src;
 		successFn(tokenArry[data.tk].user);
@@ -466,6 +558,10 @@
 	/********************************************************************/
 	/*修改个性签名*/
 	function changeDscFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		cache[tokenArry[data.tk].user.id].dsc=data.dsc;
 		tokenArry[data.tk].user.dsc=data.dsc;
 		successFn(tokenArry[data.tk].user);

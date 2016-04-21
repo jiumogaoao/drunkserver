@@ -37,6 +37,10 @@
 	/**************************************************************/
 	/*获取空间信息*/
 	function getListFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var returnList=_.filter(cache,function(point){
 				return (point.user==self.id||_.some(self.friend.checked,function(friendPoind){
@@ -56,6 +60,10 @@
 	/**************************************************************/
 	/*获取自己的说说*/
 	function getMyListFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var returnList=_.filter(cache,function(point){
 				return point.user==self.id

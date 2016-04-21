@@ -36,6 +36,10 @@
 	/**************************************************************/
 	/*获取聊天记录*/
 	function getListFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var returnList=[];
 			_.each(cache,function(point){
@@ -62,6 +66,10 @@
 	/**************************************************************/
 	/*获取组聊天记录*/
 	function getGroupListFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var returnList=[];
 			_.each(cache,function(point){
@@ -88,6 +96,10 @@
 	/**************************************************************/
 	/*聊天列表*/
 	function getMessageListFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var returnList={};
 			_.each(cache,function(point){
@@ -122,6 +134,10 @@
 	/**************************************************************/
 	/*聊天*/
 	function addFn(data,successFn,errFn){
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
 		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={
