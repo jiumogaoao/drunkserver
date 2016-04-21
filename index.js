@@ -153,7 +153,8 @@ tool.socket=function(toArry,eventName,data){
       group : require('./group'),
       album : require('./album'),
       message : require('./message'),
-      zone : require('./zone')
+      zone : require('./zone'),
+      talkGroup : require('./talkGroup')
    }
 /***********************************************************************************/
 var showDB=function(){

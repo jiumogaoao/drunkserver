@@ -120,6 +120,7 @@
 						admin:[],
 						member:[]
 					},
+					talkGroup:[],
 					money:0,
 					vip:null,
 					vipDay:0,
@@ -359,6 +360,26 @@
 	};
 	var creatGroup=new tool.factory(exports,modelName,"creatGroup",creatGroupFn,"group","add",true);
 	/********************************************************************/
+	/*创建讨论组*/
+	function creatTalkGroupFn(data,successFn,errFn){
+		if(!inited){
+				console.log("数据未同步成功，请稍后再试");
+				return false;
+			};
+		if(!data.gid&&!end){
+				data.gid=tool.uuid();
+			}
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
+		_.each(data.member,function(m){
+			cache[m].talkGroup.push(data.gid);
+		});
+		successFn(tokenArry[data.tk].user);
+	};
+	var creatTalkGroup=new tool.factory(exports,modelName,"creatTalkGroup",creatTalkGroupFn,"talkGroup","add",true);
+	/********************************************************************/
 	/*加入组*/
 	function joinGroupFn(data,successFn,errFn){
 		if(!inited){
@@ -377,6 +398,24 @@
 	};
 	var joinGroup=new tool.factory(exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
 	/********************************************************************/
+	/*加入讨论组*/
+	function joinTalkGroupFn(data,successFn,errFn){
+		if(!inited){
+				console.log("数据未同步成功，请稍后再试");
+				return false;
+			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
+		if(!data.uid){
+				data.uid=tokenArry[data.tk].user.id;
+			}
+		cache[data.uid].talkGroup.push(data.gid);
+		successFn(tokenArry[data.tk].user);
+	};
+	var joinTalkGroup=new tool.factory(exports,modelName,"joinTalkGroup",joinTalkGroupFn,"talkGroup","join",true);
+	/********************************************************************/
 	/*退出组*/
 	function outGroupFn(data,successFn,errFn){
 		if(!inited){
@@ -393,6 +432,21 @@
 		successFn(tokenArry[data.tk].user);
 	};
 	var outGroup=new tool.factory(exports,modelName,"outGroup",outGroupFn,"group","out",true);
+	/********************************************************************/
+	/*退出讨论组*/
+	function outTalkGroupFn(data,successFn,errFn){
+		if(!inited){
+				console.log("数据未同步成功，请稍后再试");
+				return false;
+			};
+		if(!tokenArry[data.tk].user){
+			errFn("请先登录");
+			return false;
+		}
+		cache[data.uid].talkGroup=_.without(cache[data.uid].talkGroup,data.gid);
+		successFn(tokenArry[data.tk].user);
+	};
+	var outTalkGroup=new tool.factory(exports,modelName,"outTalkGroup",outTalkGroupFn,"talkGroup","out",true);
 	/********************************************************************/
 	/*添加管理员*/
 	function addAdminGroupFn(data,successFn,errFn){
