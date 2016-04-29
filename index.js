@@ -68,7 +68,7 @@ smtpTransport.sendMail(mailOptions, function(error, info){
 });
 }
 /***********************************************************************************/
-tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,reactive){
+tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,linkAction,reactive){
   if(!exports||!modelName||!actionName||!mainFn){
     return false;
   }
@@ -128,7 +128,20 @@ tool.factory=function(exports,modelName,actionName,mainFn,linkModel,linkAction,r
             returnFn();
         }
       }
-      mainFn(data.data,successFn,errFn);
+      var cache={};
+      if(!request){
+         mainFn(cache,data.data,successFn,errFn);
+       }else{
+        data_mg[modelName].find(request,function(err,doc){
+			if(!err){
+				cache=doc;
+				mainFn(cache,data.data,successFn,errFn);
+				}else{
+					errFn(err);
+					}
+        });
+       }
+     
   }
   exports[actionName]=function(socket,data,fn,end,reactiveData){
     main(socket,data,fn,end,reactiveData);

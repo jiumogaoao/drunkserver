@@ -25,7 +25,8 @@
 				if(fn){fn(false);}
 				return false;
 			};
-		var loginResult=_.find(cache,function(point){
+		var loginResult=data_mg.user.
+		_.find(cache,function(point){
 				return (point.name==data.name&&point.key==data.key)||(point.phone==data.name&&point.key==data.key)
 			});
 			if(loginResult){
