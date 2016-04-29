@@ -1,5 +1,5 @@
 	/*创建组*/
-	function addFn(data,successFn,errFn){
+	function addFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -33,7 +33,7 @@
 	var add=new tool.factory(exports,modelName,"add",addFn,"user","creatGroup");
 	/**************************************************************/
 	/*加入组*/
-	function joinFn(data,successFn,errFn){
+	function joinFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -55,7 +55,7 @@
 	var join=new tool.factory(exports,modelName,"join",joinFn,"user","joinGroup");
 	/**************************************************************/
 	/*退出组*/
-	function outFn(data,successFn,errFn){
+	function outFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -71,7 +71,7 @@
 	var out=new tool.factory(exports,modelName,"out",outFn,"user","outGroup");
 	/**************************************************************/
 	/*添加管理员*/
-	function addAdminFn(data,successFn,errFn){
+	function addAdminFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -87,7 +87,7 @@
 	var addAdmin=new tool.factory(exports,modelName,"addAdmin",addAdminFn,"user","addAdminGroup");
 	/**************************************************************/
 	/*去除管理员*/
-	function cancelAdminFn(data,successFn,errFn){
+	function cancelAdminFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -103,7 +103,7 @@
 	var cancelAdmin=new tool.factory(exports,modelName,"cancelAdmin",cancelAdminFn,"user","cancelAdminGroup");
 	/**************************************************************/
 	/*搜索没进的组*/
-	function searchNotGroupFn(data,successFn,errFn){
+	function searchNotGroupFn(cache,data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
@@ -121,7 +121,7 @@
 	var searchNotGroup=new tool.factory(exports,modelName,"searchNotGroup",searchNotGroupFn);
 	/**************************************************************/
 	/*获取组信息*/
-	function getListFn(data,successFn,errFn){
+	function getListFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -137,7 +137,7 @@
 	var getList=new tool.factory(exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取自己组信息*/
-	function getMyListFn(data,successFn,errFn){
+	function getMyListFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;

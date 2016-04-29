@@ -1,5 +1,5 @@
 	/*获取聊天记录*/
-	function getListFn(data,successFn,errFn){
+	function getListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -29,7 +29,7 @@
 	var getList=new tool.factory(exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取组聊天记录*/
-	function getGroupListFn(data,successFn,errFn){
+	function getGroupListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -59,7 +59,7 @@
 	var getGroupList=new tool.factory(exports,modelName,"getGroupList",getGroupListFn);
 	/**************************************************************/
 	/*聊天列表*/
-	function getMessageListFn(data,successFn,errFn){
+	function getMessageListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -97,7 +97,7 @@
 	var getMessageList=new tool.factory(exports,modelName,"getMessageList",getMessageListFn);
 	/**************************************************************/
 	/*聊天*/
-	function addFn(data,successFn,errFn){
+	function addFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;

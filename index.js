@@ -132,9 +132,10 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
       if(!request){
          mainFn(cache,data.data,successFn,errFn);
        }else{
+		request=eval('('+request+')');
         data_mg[modelName].find(request,function(err,doc){
 			if(!err){
-				cache=doc;
+				cache=_.indexBy(doc,"id");
 				mainFn(cache,data.data,successFn,errFn);
 				}else{
 					errFn(err);

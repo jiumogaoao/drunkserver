@@ -1,5 +1,5 @@
 	/*获取空间信息*/
-	function getListFn(data,successFn,errFn){
+	function getListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -22,7 +22,7 @@
 	var getList=new tool.factory(exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取自己的说说*/
-	function getMyListFn(data,successFn,errFn){
+	function getMyListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -43,56 +43,56 @@
 	var getMyList=new tool.factory(exports,modelName,"getMyList",getMyListFn);
 	/**************************************************************/
 	/*赞*/
-	function praiseFn(data,successFn,errFn){
+	function praiseFn(cache,data,successFn,errFn){
 		cache[data.zid].praise.push(data.id);
 		successFn(cache[data.zid]);
 	};
 	var praise=new tool.factory(exports,modelName,"praise",praiseFn,"user","praise");
 	/**************************************************************/
 	/*取消赞*/
-	function cancelPraiseFn(data,successFn,errFn){
+	function cancelPraiseFn(cache,data,successFn,errFn){
 		cache[data.zid].praise=_.without(cache[data.zid].praise,data.id);
 		successFn(cache[data.zid]);
 	};
 	var cancelPraise=new tool.factory(exports,modelName,"cancelPraise",cancelPraiseFn,"user","cancelPraise");
 	/**************************************************************/
 	/*关注*/
-	function attentionFn(data,successFn,errFn){
+	function attentionFn(cache,data,successFn,errFn){
 		cache[data.zid].attention.push(data.id);
 		successFn(cache[data.zid]);
 	};
 	var attention=new tool.factory(exports,modelName,"attention",attentionFn,"user","attention");
 	/**************************************************************/
 	/*取消关注*/
-	function cancelAttentionFn(data,successFn,errFn){
+	function cancelAttentionFn(cache,data,successFn,errFn){
 		cache[data.zid].attention=_.without(cache[data.zid].attention,data.id);
 		successFn(cache[data.zid]);
 	};
 	var cancelAttention=new tool.factory(exports,modelName,"cancelAttention",cancelAttentionFn,"user","cancelAttention");
 	/**************************************************************/
 	/*看了*/
-	function readedFn(data,successFn,errFn){
+	function readedFn(cache,data,successFn,errFn){
 		cache[data.zid].readed.push(data.id);
 		successFn(cache[data.zid]);
 	};
 	var readed=new tool.factory(exports,modelName,"readed",readedFn,"user","readed");
 	/**************************************************************/	
 	/*分享*/
-	function shareFn(data,successFn,errFn){
+	function shareFn(cache,data,successFn,errFn){
 		cache[data.zid].share.push(data.id);
 		successFn(cache[data.zid]);
 	};
 	var share=new tool.factory(exports,modelName,"share",shareFn,"user","share");
 	/**************************************************************/
 	/*回复*/
-	function replyFn(data,successFn,errFn){
+	function replyFn(cache,data,successFn,errFn){
 		cache[data.zid].reply.push({form:data.id,to:data.to,text:data.text,readed:false,time:new Date().getTime()});
 		successFn(cache[data.zid]);
 	};
 	var reply=new tool.factory(exports,modelName,"reply",replyFn,"user","reply");
 	/**************************************************************/
 	/*发帖*/
-	function addFn(data,successFn,errFn){
+	function addFn(cache,data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={
@@ -117,7 +117,7 @@
 	var add=new tool.factory(exports,modelName,"add",addFn);
 	/***************************************************************/
 	/*相册照片*/
-	function addAlbumPicFn(data,successFn,errFn){
+	function addAlbumPicFn(cache,data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={
@@ -141,7 +141,7 @@
 	}
 	var addAlbumPic=new tool.factory(exports,modelName,"addAlbumPic",addAlbumPicFn,"album","addPic",true);
 	/*修改个性签名*/
-	function changeDscFn(data,successFn,errFn){
+	function changeDscFn(cache,data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
 			var newId=tool.uuid();
 				cache[newId]={

@@ -1,5 +1,5 @@
 	/*创建相册*/
-	function creatFn(data,successFn,errFn){
+	function creatFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -23,7 +23,7 @@
 	var creat=new tool.factory(exports,modelName,"creat",creatFn,"user","creatAlbum");
 	/**************************************************************/
 	/*删除相册*/
-	function removeFn(data,successFn,errFn){
+	function removeFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -34,7 +34,7 @@
 	var remove=new tool.factory(exports,modelName,"remove",removeFn,"user","removeAlbum");
 	/**************************************************************/
 	/*添加图片*/
-	function addPicFn(data,successFn,errFn){
+	function addPicFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -50,7 +50,7 @@
 	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
 	/**************************************************************/
 	/*删除图片*/
-	function removePicFn(data,successFn,errFn){
+	function removePicFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -61,7 +61,7 @@
 	var removePic=new tool.factory(exports,modelName,"removePic",removePicFn);
 	/**************************************************************/
 	/*获取相册列表*/
-	function getAlbumListFn(data,successFn,errFn){
+	function getAlbumListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -78,7 +78,7 @@
 	var getAlbumList=new tool.factory(exports,modelName,"getAlbumList",getAlbumListFn);
 	/**************************************************************/
 	/*设置封面*/
-	function setIconFn(data,successFn,errFn){
+	function setIconFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;

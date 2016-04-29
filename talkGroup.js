@@ -1,5 +1,5 @@
 	/*创建组*/
-	function addFn(data,successFn,errFn){
+	function addFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -24,7 +24,7 @@
 	var add=new tool.factory(exports,modelName,"add",addFn,"user","creatTalkGroup");
 	/**************************************************************/
 	/*加入组*/
-	function joinFn(data,successFn,errFn){
+	function joinFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -46,7 +46,7 @@
 	var join=new tool.factory(exports,modelName,"join",joinFn,"user","joinTalkGroup");
 	/**************************************************************/
 	/*退出组*/
-	function outFn(data,successFn,errFn){
+	function outFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -62,7 +62,7 @@
 	var out=new tool.factory(exports,modelName,"out",outFn,"user","outTalkGroup");
 	/**************************************************************/
 	/*获取组信息*/
-	function getListFn(data,successFn,errFn){
+	function getListFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -78,7 +78,7 @@
 	var getList=new tool.factory(exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取自己组信息*/
-	function getMyListFn(data,successFn,errFn){
+	function getMyListFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;

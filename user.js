@@ -1,5 +1,5 @@
 	/*获取token*/
-	function getTokenFn(data,successFn,errFn){
+	function getTokenFn(cache,data,successFn,errFn){
 	if(data.tk&&tokenArry[data.tk]){
 		if(tokenArry[data.tk].user&&tokenArry[data.tk].user.id){
 			successFn({tk:data.tk,user:tokenArry[data.tk].user});
@@ -19,7 +19,7 @@
 	var getToken=new tool.factory(exports,modelName,"getToken",getTokenFn);
 	/********************************************************************/
 	/*登录*/
-	function loginFn(data,successFn,errFn){
+	function loginFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				if(fn){fn(false);}
@@ -39,7 +39,7 @@
 	var login=new tool.factory(exports,modelName,"login",loginFn);
 	/********************************************************************/
 	/*注册*/
-	function regestFn(data,successFn,errFn){
+	function regestFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				if(fn){fn(false);}
@@ -125,7 +125,7 @@
 	var regest=new tool.factory(exports,modelName,"regest",regestFn);
 	/********************************************************************/
 	/*添加好友*/
-	function addFriendFn(data,successFn,errFn){
+	function addFriendFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				if(fn){fn(false);}
@@ -147,7 +147,7 @@
 	var addFriend=new tool.factory(exports,modelName,"addFriend",addFriendFn);
 	/********************************************************************/
 	/*拒绝添加好友*/
-	function rejectFriendFn(data,successFn,errFn){
+	function rejectFriendFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -165,7 +165,7 @@
 	var rejectFriend=new tool.factory(exports,modelName,"rejectFriend",rejectFriendFn);
 	/********************************************************************/
 	/*确认添加好友*/
-	function checkFriendFn(data,successFn,errFn){
+	function checkFriendFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -184,7 +184,7 @@
 	var checkFriend=new tool.factory(exports,modelName,"checkFriend",checkFriendFn);
 	/********************************************************************/
 	/*删除好友*/
-	function removeFriendFn(data,successFn,errFn){
+	function removeFriendFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -202,7 +202,7 @@
 	var removeFriend=new tool.factory(exports,modelName,"removeFriend",removeFriendFn);
 	/********************************************************************/
 	/*赞*/
-	function praiseFn(data,successFn,errFn){
+	function praiseFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -217,7 +217,7 @@
 	var praise=new tool.factory(exports,modelName,"praise",praiseFn,"zone","praise",true);
 	/********************************************************************/
 	/*取消赞*/
-	function cancelPraiseFn(data,successFn,errFn){
+	function cancelPraiseFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -232,7 +232,7 @@
 	var cancelPraise=new tool.factory(exports,modelName,"cancelPraise",cancelPraiseFn,"zone","cancelPraise",true);
 	/********************************************************************/
 	/*关注*/
-	function attentionFn(data,successFn,errFn){
+	function attentionFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -247,7 +247,7 @@
 	var attention=new tool.factory(exports,modelName,"attention",attentionFn,"zone","attention",true);
 	/********************************************************************/
 	/*取消关注*/
-	function cancelAttentionFn(data,successFn,errFn){
+	function cancelAttentionFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -262,7 +262,7 @@
 	var cancelAttention=new tool.factory(exports,modelName,"cancelAttention",cancelAttentionFn,"zone","cancelAttention",true);
 	/********************************************************************/
 	/*看了*/
-	function readedFn(data,successFn,errFn){
+	function readedFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -277,7 +277,7 @@
 	var readed=new tool.factory(exports,modelName,"readed",readedFn,"zone","readed",true);
 	/********************************************************************/
 	/*分享*/
-	function shareFn(data,successFn,errFn){
+	function shareFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -292,7 +292,7 @@
 	var share=new tool.factory(exports,modelName,"share",shareFn,"zone","share",true);
 	/********************************************************************/
 	/*回复*/
-	function replyFn(data,successFn,errFn){
+	function replyFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -307,7 +307,7 @@
 	var reply=new tool.factory(exports,modelName,"reply",replyFn,"zone","reply",true);
 	/********************************************************************/
 	/*创建组*/
-	function creatGroupFn(data,successFn,errFn){
+	function creatGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -325,7 +325,7 @@
 	var creatGroup=new tool.factory(exports,modelName,"creatGroup",creatGroupFn,"group","add",true);
 	/********************************************************************/
 	/*创建讨论组*/
-	function creatTalkGroupFn(data,successFn,errFn){
+	function creatTalkGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -345,7 +345,7 @@
 	var creatTalkGroup=new tool.factory(exports,modelName,"creatTalkGroup",creatTalkGroupFn,"talkGroup","add",true);
 	/********************************************************************/
 	/*加入组*/
-	function joinGroupFn(data,successFn,errFn){
+	function joinGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -363,7 +363,7 @@
 	var joinGroup=new tool.factory(exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
 	/********************************************************************/
 	/*加入讨论组*/
-	function joinTalkGroupFn(data,successFn,errFn){
+	function joinTalkGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -381,7 +381,7 @@
 	var joinTalkGroup=new tool.factory(exports,modelName,"joinTalkGroup",joinTalkGroupFn,"talkGroup","join",true);
 	/********************************************************************/
 	/*退出组*/
-	function outGroupFn(data,successFn,errFn){
+	function outGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -398,7 +398,7 @@
 	var outGroup=new tool.factory(exports,modelName,"outGroup",outGroupFn,"group","out",true);
 	/********************************************************************/
 	/*退出讨论组*/
-	function outTalkGroupFn(data,successFn,errFn){
+	function outTalkGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -413,7 +413,7 @@
 	var outTalkGroup=new tool.factory(exports,modelName,"outTalkGroup",outTalkGroupFn,"talkGroup","out",true);
 	/********************************************************************/
 	/*添加管理员*/
-	function addAdminGroupFn(data,successFn,errFn){
+	function addAdminGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -429,7 +429,7 @@
 	var addAdminGroup=new tool.factory(exports,modelName,"addAdminGroup",addAdminGroupFn,"group","addAdmin",true);
 	/********************************************************************/
 	/*去除管理员*/
-	function cancelAdminGroupFn(data,successFn,errFn){
+	function cancelAdminGroupFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -445,7 +445,7 @@
 	var cancelAdminGroup=new tool.factory(exports,modelName,"cancelAdminGroup",cancelAdminGroupFn,"group","cancelAdmin",true);
 	/********************************************************************/	
 	/*创建相册*/
-	function creatAlbumFn(data,successFn,errFn){
+	function creatAlbumFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -460,7 +460,7 @@
 	var creatAlbum=new tool.factory(exports,modelName,"creatAlbum",creatAlbumFn,"album","creat",true);
 	/********************************************************************/
 	/*删除相册*/
-	function removeAlbumFn(data,successFn,errFn){
+	function removeAlbumFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -475,7 +475,7 @@
 	var removeAlbum=new tool.factory(exports,modelName,"removeAlbum",removeAlbumFn,"album","remove",true);
 	/********************************************************************/
 	/*搜索没添加的人*/
-	function searchNotFriendFn(data,successFn,errFn){
+	function searchNotFriendFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -496,7 +496,7 @@
 	var searchNotFriend=new tool.factory(exports,modelName,"searchNotFriend",searchNotFriendFn);
 	/********************************************************************/
 	/*返回好友列表*/
-	function getFriendListFn(data,successFn,errFn){
+	function getFriendListFn(cache,data,successFn,errFn){
 		if(!inited){
 				console.log("数据未同步成功，请稍后再试");
 				return false;
@@ -538,7 +538,7 @@
 	var getFriendList=new tool.factory(exports,modelName,"getFriendList",getFriendListFn);
 	/********************************************************************/
 	/*设置个人信息*/
-	function editDetailFn(data,successFn,errFn){
+	function editDetailFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -551,7 +551,7 @@
 	var editDetail=new tool.factory(exports,modelName,"editDetail",editDetailFn);
 	/********************************************************************/
 	/*更换名片背景*/
-	function changeBackgroundFn(data,successFn,errFn){
+	function changeBackgroundFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -563,7 +563,7 @@
 	var changeBackground=new tool.factory(exports,modelName,"changeBackground",changeBackgroundFn);
 	/********************************************************************/
 	/*更换头像*/
-	function changeIconFn(data,successFn,errFn){
+	function changeIconFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -575,7 +575,7 @@
 	var changeIcon=new tool.factory(exports,modelName,"changeIcon",changeIconFn);
 	/********************************************************************/
 	/*修改个性签名*/
-	function changeDscFn(data,successFn,errFn){
+	function changeDscFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
