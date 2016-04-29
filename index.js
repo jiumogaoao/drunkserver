@@ -5,7 +5,12 @@
    var dbURL="mongodb://127.0.0.1:27017/drunk"
    global.db = require("mongoose").connect(dbURL);
    global.data_mg = {}
-   data_mg = require('./data/models/drunk');
+   data_mg.album = require('./data/models/album');
+   data_mg.group = require('./data/models/group');
+   data_mg.message = require('./data/models/message');
+   data_mg.talkGroup = require('./data/models/talkGroup');
+   data_mg.user = require('./data/models/user');
+   data_mg.zone = require('./data/models/zone');
 /**********************************************************************************/   
 var app = require('./server')
   , router = require('./router')
