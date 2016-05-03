@@ -26,7 +26,7 @@
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getList=new tool.factory(exports,modelName,"getList",getListFn);
+	var getList=new tool.factory('{$or:[{from:tokenArry[data.tk].user.id,to:data.to,state:0},{to:tokenArry[data.tk].user.id,from:data.to,state:0}]}',exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取组聊天记录*/
 	function getGroupListFn(cache,data,successFn,errFn){
@@ -56,7 +56,7 @@
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getGroupList=new tool.factory(exports,modelName,"getGroupList",getGroupListFn);
+	var getGroupList=new tool.factory('{to:data.to,state:1}',exports,modelName,"getGroupList",getGroupListFn);
 	/**************************************************************/
 	/*聊天列表*/
 	function getMessageListFn(cache,data,successFn,errFn){
@@ -94,7 +94,7 @@
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getMessageList=new tool.factory(exports,modelName,"getMessageList",getMessageListFn);
+	var getMessageList=new tool.factory('{}',exports,modelName,"getMessageList",getMessageListFn);
 	/**************************************************************/
 	/*聊天*/
 	function addFn(cache,data,successFn,errFn){
@@ -135,4 +135,4 @@
 				}
 				successFn(cache[newId]);
 	};
-	var getMessageList=new tool.factory(exports,modelName,"add",addFn);
+	var getMessageList=new tool.factory(null,exports,modelName,"add",addFn);

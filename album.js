@@ -20,7 +20,7 @@
 			};
 		successFn(cache[data.aid]);
 	};
-	var creat=new tool.factory(exports,modelName,"creat",creatFn,"user","creatAlbum");
+	var creat=new tool.factory(null,exports,modelName,"creat",creatFn,"user","creatAlbum");
 	/**************************************************************/
 	/*删除相册*/
 	function removeFn(cache,data,successFn,errFn){
@@ -31,7 +31,7 @@
 		delete cache[data.aid];
 		successFn(true);
 	};
-	var remove=new tool.factory(exports,modelName,"remove",removeFn,"user","removeAlbum");
+	var remove=new tool.factory('{id:data.aid}',exports,modelName,"remove",removeFn,"user","removeAlbum");
 	/**************************************************************/
 	/*添加图片*/
 	function addPicFn(cache,data,successFn,errFn){
@@ -47,7 +47,7 @@
 			});
 		successFn(cache[data.aid]);
 	};
-	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
+	var addPic=new tool.factory('{id:data.aid}',exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
 	/**************************************************************/
 	/*删除图片*/
 	function removePicFn(cache,data,successFn,errFn){
@@ -58,7 +58,7 @@
 		cache[data.aid].list=_.reject(cache[data.aid].list,{id:data.pid});
 		successFn(cache[data.aid]);
 	};
-	var removePic=new tool.factory(exports,modelName,"removePic",removePicFn);
+	var removePic=new tool.factory('{id:data.aid}',exports,modelName,"removePic",removePicFn);
 	/**************************************************************/
 	/*获取相册列表*/
 	function getAlbumListFn(cache,data,successFn,errFn){
@@ -75,7 +75,7 @@
 			});
 		successFn(showList);
 	};
-	var getAlbumList=new tool.factory(exports,modelName,"getAlbumList",getAlbumListFn);
+	var getAlbumList=new tool.factory('{id:data.uid}',exports,modelName,"getAlbumList",getAlbumListFn);
 	/**************************************************************/
 	/*设置封面*/
 	function setIconFn(cache,data,successFn,errFn){
@@ -86,4 +86,4 @@
 		cache[data.aid].icon=data.url;
 		successFn(cache[data.aid]);
 	};
-	var setIcon=new tool.factory(exports,modelName,"setIcon",setIconFn);
+	var setIcon=new tool.factory('{id:data.aid}',exports,modelName,"setIcon",setIconFn);

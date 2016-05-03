@@ -472,7 +472,7 @@
 		cache[tokenArry[data.tk].user.id].album=_.without(cache[tokenArry[data.tk].user.id].album,data.aid);
 		successFn(tokenArry[data.tk].user);
 	};
-	var removeAlbum=new tool.factory(exports,modelName,"removeAlbum",removeAlbumFn,"album","remove",true);
+	var removeAlbum=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"removeAlbum",removeAlbumFn,"album","remove",true);
 	/********************************************************************/
 	/*搜索没添加的人*/
 	function searchNotFriendFn(cache,data,successFn,errFn){
@@ -493,7 +493,7 @@
 			});
 		successFn(returnList);
 	};
-	var searchNotFriend=new tool.factory(exports,modelName,"searchNotFriend",searchNotFriendFn);
+	var searchNotFriend=new tool.factory('{}',exports,modelName,"searchNotFriend",searchNotFriendFn);
 	/********************************************************************/
 	/*返回好友列表*/
 	function getFriendListFn(cache,data,successFn,errFn){
@@ -535,7 +535,7 @@
 			});
 		successFn(returnObj);
 	};
-	var getFriendList=new tool.factory(exports,modelName,"getFriendList",getFriendListFn);
+	var getFriendList=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"getFriendList",getFriendListFn);
 	/********************************************************************/
 	/*设置个人信息*/
 	function editDetailFn(cache,data,successFn,errFn){
@@ -548,7 +548,7 @@
 		tokenArry[data.tk].user=_.omit(cache[tokenArry[data.tk].user.id],"key");
 		successFn(tokenArry[data.tk].user);
 	};
-	var editDetail=new tool.factory(exports,modelName,"editDetail",editDetailFn);
+	var editDetail=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"editDetail",editDetailFn);
 	/********************************************************************/
 	/*更换名片背景*/
 	function changeBackgroundFn(cache,data,successFn,errFn){
@@ -560,7 +560,7 @@
 		tokenArry[data.tk].user.background=data.src;
 		successFn(tokenArry[data.tk].user);
 	};
-	var changeBackground=new tool.factory(exports,modelName,"changeBackground",changeBackgroundFn);
+	var changeBackground=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"changeBackground",changeBackgroundFn);
 	/********************************************************************/
 	/*更换头像*/
 	function changeIconFn(cache,data,successFn,errFn){
@@ -572,7 +572,7 @@
 		tokenArry[data.tk].user.icon=data.src;
 		successFn(tokenArry[data.tk].user);
 	};
-	var changeIcon=new tool.factory(exports,modelName,"changeIcon",changeIconFn);
+	var changeIcon=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"changeIcon",changeIconFn);
 	/********************************************************************/
 	/*修改个性签名*/
 	function changeDscFn(cache,data,successFn,errFn){
@@ -584,4 +584,4 @@
 		tokenArry[data.tk].user.dsc=data.dsc;
 		successFn(tokenArry[data.tk].user);
 	};
-	var changeDsc=new tool.factory(exports,modelName,"changeDsc",changeDscFn,"zone","changeDsc");
+	var changeDsc=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"changeDsc",changeDscFn,"zone","changeDsc");

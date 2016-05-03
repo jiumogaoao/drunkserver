@@ -30,7 +30,7 @@
 			};
 		successFn(cache[data.gid]);
 	};
-	var add=new tool.factory(exports,modelName,"add",addFn,"user","creatGroup");
+	var add=new tool.factory(null,exports,modelName,"add",addFn,"user","creatGroup");
 	/**************************************************************/
 	/*加入组*/
 	function joinFn(cache,data,successFn,errFn){
@@ -52,7 +52,7 @@
 			cache[data.gid].member.push({id:data.uid,nickName:"",type:"owner"});
 		successFn(cache[data.gid]);
 	};
-	var join=new tool.factory(exports,modelName,"join",joinFn,"user","joinGroup");
+	var join=new tool.factory('{id:data.gid}',exports,modelName,"join",joinFn,"user","joinGroup");
 	/**************************************************************/
 	/*退出组*/
 	function outFn(cache,data,successFn,errFn){
@@ -68,7 +68,7 @@
 		cache[data.gid].member=_.reject(cache[data.gid].member,{id:data.uid});
 		successFn(cache[data.gid]);
 	};
-	var out=new tool.factory(exports,modelName,"out",outFn,"user","outGroup");
+	var out=new tool.factory('{id:data.gid}',exports,modelName,"out",outFn,"user","outGroup");
 	/**************************************************************/
 	/*添加管理员*/
 	function addAdminFn(cache,data,successFn,errFn){
@@ -84,7 +84,7 @@
 			returnObj.type="admin";
 		successFn(returnObj);
 	};
-	var addAdmin=new tool.factory(exports,modelName,"addAdmin",addAdminFn,"user","addAdminGroup");
+	var addAdmin=new tool.factory('{id:data.gid}',exports,modelName,"addAdmin",addAdminFn,"user","addAdminGroup");
 	/**************************************************************/
 	/*去除管理员*/
 	function cancelAdminFn(cache,data,successFn,errFn){
@@ -100,7 +100,7 @@
 			returnObj.type="member";
 		successFn(returnObj);
 	};
-	var cancelAdmin=new tool.factory(exports,modelName,"cancelAdmin",cancelAdminFn,"user","cancelAdminGroup");
+	var cancelAdmin=new tool.factory('{id:data.gid}',exports,modelName,"cancelAdmin",cancelAdminFn,"user","cancelAdminGroup");
 	/**************************************************************/
 	/*搜索没进的组*/
 	function searchNotGroupFn(cache,data,successFn,errFn){
@@ -118,7 +118,7 @@
 			});
 		successFn(returnList);
 	};
-	var searchNotGroup=new tool.factory(exports,modelName,"searchNotGroup",searchNotGroupFn);
+	var searchNotGroup=new tool.factory('{}',exports,modelName,"searchNotGroup",searchNotGroupFn);
 	/**************************************************************/
 	/*获取组信息*/
 	function getListFn(cache,data,successFn,errFn){
@@ -134,7 +134,7 @@
 			});
 		successFn(returnObj);
 	};
-	var getList=new tool.factory(exports,modelName,"getList",getListFn);
+	var getList=new tool.factory('{id:{$in:data.idArry}}',exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取自己组信息*/
 	function getMyListFn(cache,data,successFn,errFn){
@@ -159,4 +159,4 @@
 			});
 		successFn(returnObj);
 	};
-	var getMyList=new tool.factory(exports,modelName,"getMyList",getMyListFn);	
+	var getMyList=new tool.factory('{id:tokenArry[data.tk].user.id}',exports,modelName,"getMyList",getMyListFn);	
