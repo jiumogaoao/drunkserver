@@ -100,33 +100,58 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
         returnFn();
       }
       function successFn(returnData){
-          if(linkModel&&linkAction){
-            if(end){
-            if(reactive){
-              result.data=reactiveData;
+        if(request){
+          var total=_.size(cache);
+          var totalCount=0;
+          function scFn(){
+            if(linkModel&&linkAction){
+                if(end){
+                if(reactive){
+                  result.data=reactiveData;
+                }else{
+                  result.data=returnData;
+                }
+                result.success=true;
+                result.code=1;
+                result.time=new Date().getTime();
+                console.log(result)
+                returnFn();
+              }else{
+                var activeData={};
+                if(!reactive){
+                  activeData=returnData;
+                }
+                server[linkModel][linkAction](socket,data,fn,true,activeData);  
+              }
             }else{
               result.data=returnData;
+                result.success=true;
+                result.code=1;
+                result.time=new Date().getTime();
+                console.log(result)
+                returnFn();
             }
-            result.success=true;
-            result.code=1;
-            result.time=new Date().getTime();
-            console.log(result)
-            returnFn();
-          }else{
-            var activeData={};
-            if(!reactive){
-              activeData=returnData;
-            }
-            server[linkModel][linkAction](socket,data,fn,true,activeData);  
           }
+          function saveSC(err,doc){
+            if(err){
+              result.success=false;
+              console.log(err);
+              result.message=message;
+              returnFn();
+            }else{
+              totalCount++;
+              if(total==totalCount){
+                scFn();
+              }
+            }
+          }
+          _.each(cache,function(point){
+            point.save(saveSC);
+          });
         }else{
-          result.data=returnData;
-            result.success=true;
-            result.code=1;
-            result.time=new Date().getTime();
-            console.log(result)
-            returnFn();
+          scFn();
         }
+          
       }
       var cache={};
       if(!request){
@@ -142,7 +167,6 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
 					}
         });
        }
-     
   }
   exports[actionName]=function(socket,data,fn,end,reactiveData){
     main(socket,data,fn,end,reactiveData);
