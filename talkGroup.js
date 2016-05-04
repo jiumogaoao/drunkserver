@@ -97,4 +97,4 @@
 			});
 		successFn(returnObj);
 	};
-	var getMyList=new tool.factory('{}',exports,modelName,"getMyList",getMyListFn);	
+	var getMyList=new tool.factory('{member:{$in:[tokenArry[data.tk].user.id]}}',exports,modelName,"getMyList",getMyListFn);	

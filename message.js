@@ -94,7 +94,7 @@
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getMessageList=new tool.factory('{}',exports,modelName,"getMessageList",getMessageListFn);
+	var getMessageList=new tool.factory('{$or:[{to:tokenArry[data.tk].user.id,state:0},{from:tokenArry[data.tk].user.id,state:0},{to:{$in:tokenArry[data.tk].user.group.creat},state:1},{to:{$in:tokenArry[data.tk].user.group.admin},state:1},{to:{$in:tokenArry[data.tk].user.group.member},state:1}]}',exports,modelName,"getMessageList",getMessageListFn);
 	/**************************************************************/
 	/*聊天*/
 	function addFn(cache,data,successFn,errFn){

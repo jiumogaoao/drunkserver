@@ -118,7 +118,7 @@
 			});
 		successFn(returnList);
 	};
-	var searchNotGroup=new tool.factory('{}',exports,modelName,"searchNotGroup",searchNotGroupFn);
+	var searchNotGroup=new tool.factory('{member:{id:{$nin:[self.id]}}}',exports,modelName,"searchNotGroup",searchNotGroupFn);
 	/**************************************************************/
 	/*获取组信息*/
 	function getListFn(cache,data,successFn,errFn){

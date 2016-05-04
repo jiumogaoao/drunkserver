@@ -16,7 +16,7 @@
 		successFn({tk:tokenA,user:null});
 			}
 	}
-	var getToken=new tool.factory(exports,modelName,"getToken",getTokenFn);
+	var getToken=new tool.factory(null,exports,modelName,"getToken",getTokenFn);
 	/********************************************************************/
 	/*登录*/
 	function loginFn(cache,data,successFn,errFn){
@@ -493,7 +493,7 @@
 			});
 		successFn(returnList);
 	};
-	var searchNotFriend=new tool.factory('{}',exports,modelName,"searchNotFriend",searchNotFriendFn);
+	var searchNotFriend=new tool.factory('{id:{$nin:[tokenArry[data.tk].user.id]},friend:{checked:{$nin:tokenArry[data.tk].user.id}}}',exports,modelName,"searchNotFriend",searchNotFriendFn);
 	/********************************************************************/
 	/*返回好友列表*/
 	function getFriendListFn(cache,data,successFn,errFn){
