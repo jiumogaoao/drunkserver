@@ -99,11 +99,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
         result.message=message;
         returnFn();
       }
-      function successFn(returnData){
-        if(request){
-          var total=_.size(cache);
-          var totalCount=0;
-          function scFn(){
+	  function scFn(returnData){
             if(linkModel&&linkAction){
                 if(end){
                 if(reactive){
@@ -132,6 +128,10 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
                 returnFn();
             }
           }
+      function successFn(returnData){
+        if(request){
+          var total=_.size(cache);
+          var totalCount=0;
           function saveSC(err,doc){
             if(err){
               result.success=false;
@@ -141,7 +141,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
             }else{
               totalCount++;
               if(total==totalCount){
-                scFn();
+                scFn(returnData);
               }
             }
           }
@@ -149,7 +149,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
             point.save(saveSC);
           });
         }else{
-          scFn();
+          scFn(returnData);
         }
           
       }
