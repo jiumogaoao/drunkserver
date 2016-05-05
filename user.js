@@ -20,12 +20,7 @@
 	/********************************************************************/
 	/*登录*/
 	function loginFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				if(fn){fn(false);}
-				return false;
-			};
-		var loginResult=data_mg.user.
+		var loginResult=data_mg.user
 		_.find(cache,function(point){
 				return (point.name==data.name&&point.key==data.key)||(point.phone==data.name&&point.key==data.key)
 			});
@@ -40,11 +35,6 @@
 	/********************************************************************/
 	/*注册*/
 	function regestFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				if(fn){fn(false);}
-				return false;
-			};
 		if(_.findWhere(cache,{name:data.name})){
 				errFn("帐号已有","帐号已有");
 			}else{/*写入*/
@@ -126,11 +116,6 @@
 	/********************************************************************/
 	/*添加好友*/
 	function addFriendFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				if(fn){fn(false);}
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -148,10 +133,6 @@
 	/********************************************************************/
 	/*拒绝添加好友*/
 	function rejectFriendFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -166,10 +147,6 @@
 	/********************************************************************/
 	/*确认添加好友*/
 	function checkFriendFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -185,10 +162,6 @@
 	/********************************************************************/
 	/*删除好友*/
 	function removeFriendFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -203,10 +176,6 @@
 	/********************************************************************/
 	/*赞*/
 	function praiseFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -218,10 +187,6 @@
 	/********************************************************************/
 	/*取消赞*/
 	function cancelPraiseFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -233,10 +198,6 @@
 	/********************************************************************/
 	/*关注*/
 	function attentionFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -248,10 +209,6 @@
 	/********************************************************************/
 	/*取消关注*/
 	function cancelAttentionFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -263,10 +220,6 @@
 	/********************************************************************/
 	/*看了*/
 	function readedFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -278,10 +231,6 @@
 	/********************************************************************/
 	/*分享*/
 	function shareFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -293,10 +242,6 @@
 	/********************************************************************/
 	/*回复*/
 	function replyFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -308,10 +253,6 @@
 	/********************************************************************/
 	/*创建组*/
 	function creatGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!data.gid&&!end){
 				data.gid=tool.uuid();
 			}
@@ -326,10 +267,6 @@
 	/********************************************************************/
 	/*创建讨论组*/
 	function creatTalkGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!data.gid&&!end){
 				data.gid=tool.uuid();
 			}
@@ -346,10 +283,6 @@
 	/********************************************************************/
 	/*加入组*/
 	function joinGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -360,14 +293,10 @@
 		cache[data.uid].group.member.push(data.gid);
 		successFn(tokenArry[data.tk].user);
 	};
-	var joinGroup=new tool.factory('{id:data.uid}',exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
+	var joinGroup=new tool.factory('{id:data.uid||tokenArry[data.tk].user.id}',exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
 	/********************************************************************/
 	/*加入讨论组*/
 	function joinTalkGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -378,14 +307,10 @@
 		cache[data.uid].talkGroup.push(data.gid);
 		successFn(tokenArry[data.tk].user);
 	};
-	var joinTalkGroup=new tool.factory('{id:data.uid}',exports,modelName,"joinTalkGroup",joinTalkGroupFn,"talkGroup","join",true);
+	var joinTalkGroup=new tool.factory('{id:data.uid||tokenArry[data.tk].user.id}',exports,modelName,"joinTalkGroup",joinTalkGroupFn,"talkGroup","join",true);
 	/********************************************************************/
 	/*退出组*/
 	function outGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -399,10 +324,6 @@
 	/********************************************************************/
 	/*退出讨论组*/
 	function outTalkGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -414,10 +335,6 @@
 	/********************************************************************/
 	/*添加管理员*/
 	function addAdminGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -430,10 +347,6 @@
 	/********************************************************************/
 	/*去除管理员*/
 	function cancelAdminGroupFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -446,10 +359,6 @@
 	/********************************************************************/	
 	/*创建相册*/
 	function creatAlbumFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -461,10 +370,6 @@
 	/********************************************************************/
 	/*删除相册*/
 	function removeAlbumFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -476,10 +381,6 @@
 	/********************************************************************/
 	/*搜索没添加的人*/
 	function searchNotFriendFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -493,14 +394,10 @@
 			});
 		successFn(returnList);
 	};
-	var searchNotFriend=new tool.factory('{id:{$nin:[tokenArry[data.tk].user.id]},friend:{checked:{$nin:tokenArry[data.tk].user.id}}}',exports,modelName,"searchNotFriend",searchNotFriendFn);
+	var searchNotFriend=new tool.factory('{id:{$nin:[tokenArry[data.tk].user.id]},friend:{checked:{$or:[{id:{$nin:tokenArry[data.tk].user.id}}]}}}',exports,modelName,"searchNotFriend",searchNotFriendFn);
 	/********************************************************************/
 	/*返回好友列表*/
 	function getFriendListFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;

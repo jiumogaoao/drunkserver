@@ -1,9 +1,5 @@
 	/*创建组*/
 	function addFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
@@ -34,10 +30,6 @@
 	/**************************************************************/
 	/*加入组*/
 	function joinFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		if(!data.gid){
 				data.gid=tool.uuid();
 			}
@@ -56,10 +48,6 @@
 	/**************************************************************/
 	/*退出组*/
 	function outFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -72,10 +60,6 @@
 	/**************************************************************/
 	/*添加管理员*/
 	function addAdminFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -88,10 +72,6 @@
 	/**************************************************************/
 	/*去除管理员*/
 	function cancelAdminFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -105,10 +85,6 @@
 	/*搜索没进的组*/
 	function searchNotGroupFn(cache,data,successFn,errFn){
 		var self=tokenArry[data.tk].user;
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -122,10 +98,6 @@
 	/**************************************************************/
 	/*获取组信息*/
 	function getListFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 		var returnObj={};
 			_.each(data.idArry,function(point){
 				if(cache[point]){
@@ -138,10 +110,6 @@
 	/**************************************************************/
 	/*获取自己组信息*/
 	function getMyListFn(cache,data,successFn,errFn){
-		if(!inited){
-				console.log("数据未同步成功，请稍后再试");
-				return false;
-			};
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
