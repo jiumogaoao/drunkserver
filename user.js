@@ -1,3 +1,4 @@
+	var modelName=_.last(__filename.split("\\")).split(".")[0];
 	/*获取token*/
 	function getTokenFn(cache,data,successFn,errFn){
 	if(data.tk&&tokenArry[data.tk]){

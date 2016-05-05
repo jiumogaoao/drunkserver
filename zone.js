@@ -1,3 +1,4 @@
+var modelName=_.last(__filename.split("\\")).split(".")[0];
 	/*获取空间信息*/
 	function getListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){

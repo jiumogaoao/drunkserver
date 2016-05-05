@@ -1,3 +1,4 @@
+var modelName=_.last(__filename.split("\\")).split(".")[0];
 	/*获取聊天记录*/
 	function getListFn(cache,data,successFn,errFn){
 		if(!tokenArry[data.tk].user){

@@ -1,3 +1,4 @@
+var modelName=_.last(__filename.split("\\")).split(".")[0];
 	/*创建组*/
 	function addFn(cache,data,successFn,errFn){
 		if(!data.gid){

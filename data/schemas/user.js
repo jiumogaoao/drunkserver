@@ -28,7 +28,7 @@ var MemberSchema = new mongoose.Schema({
 	vip:Number,
 	vipDay:Number,
 	diy:Object,
-	collection:Array,
+	collect:Array,
 	file:Array,
 	praise:Array,
 	attention:Array,
