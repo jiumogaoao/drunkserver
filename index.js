@@ -128,7 +128,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
                 returnFn();
             }
           }
-      function successFn(returnData){
+      function successFn(returnData,cache){
         if(_.size(cache)){
           var total=_.size(cache);
           var totalCount=0;
@@ -156,9 +156,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
       if(!request){
          mainFn(cache,data.data,successFn,errFn);
        }else{
-        console.log("request:"+JSON.stringify(request));
 		var newRequest=eval('('+request+')');
-        console.log(newRequest)
         data_mg[modelName].find(newRequest,function(err,doc){
 			if(!err){
 				cache=_.indexBy(doc,"id");

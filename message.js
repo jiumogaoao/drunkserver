@@ -27,7 +27,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getList=new tool.factory('{$or:[{from:tokenArry[data.tk].user.id,to:data.to,state:0},{to:tokenArry[data.tk].user.id,from:data.to,state:0}]}',exports,modelName,"getList",getListFn);
+	var getList=new tool.factory('{$or:[{from:tokenArry[data.data.tk].user.id,to:data.data.to,state:0},{to:tokenArry[data.data.tk].user.id,from:data.data.to,state:0}]}',exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取组聊天记录*/
 	function getGroupListFn(cache,data,successFn,errFn){
@@ -57,7 +57,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getGroupList=new tool.factory('{to:data.to,state:1}',exports,modelName,"getGroupList",getGroupListFn);
+	var getGroupList=new tool.factory('{to:data.data.to,state:1}',exports,modelName,"getGroupList",getGroupListFn);
 	/**************************************************************/
 	/*聊天列表*/
 	function getMessageListFn(cache,data,successFn,errFn){
@@ -95,7 +95,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				errFn("获取聊天信息出错","获取聊天信息出错");
 			}
 	};
-	var getMessageList=new tool.factory('{$or:[{to:tokenArry[data.tk].user.id,state:0},{from:tokenArry[data.tk].user.id,state:0},{to:{$in:tokenArry[data.tk].user.group.creat},state:1},{to:{$in:tokenArry[data.tk].user.group.admin},state:1},{to:{$in:tokenArry[data.tk].user.group.member},state:1}]}',exports,modelName,"getMessageList",getMessageListFn);
+	var getMessageList=new tool.factory('{$or:[{to:tokenArry[data.data.tk].user.id,state:0},{from:tokenArry[data.data.tk].user.id,state:0},{to:{$in:tokenArry[data.data.tk].user.group.creat},state:1},{to:{$in:tokenArry[data.data.tk].user.group.admin},state:1},{to:{$in:tokenArry[data.data.tk].user.group.member},state:1}]}',exports,modelName,"getMessageList",getMessageListFn);
 	/**************************************************************/
 	/*聊天*/
 	function addFn(cache,data,successFn,errFn){
@@ -134,6 +134,6 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 					}
 					server.group.getList(null,{data:{idArry:[data.to]}},memberGet);
 				}
-				successFn(cache[newId]);
+				successFn(cache[newId],cache);
 	};
 	var getMessageList=new tool.factory(null,exports,modelName,"add",addFn);

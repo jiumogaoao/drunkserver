@@ -19,7 +19,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				time:new Date().getTime(),
 				list:[]
 			};
-		successFn(cache[data.aid]);
+		successFn(cache[data.aid],cache);
 	};
 	var creat=new tool.factory(null,exports,modelName,"creat",creatFn,"user","creatAlbum");
 	/**************************************************************/
@@ -32,7 +32,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 		delete cache[data.aid];
 		successFn(true);
 	};
-	var remove=new tool.factory('{id:data.aid}',exports,modelName,"remove",removeFn,"user","removeAlbum");
+	var remove=new tool.factory('{id:data.data.aid}',exports,modelName,"remove",removeFn,"user","removeAlbum");
 	/**************************************************************/
 	/*添加图片*/
 	function addPicFn(cache,data,successFn,errFn){
@@ -46,9 +46,9 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				time:new Date().getTime(),
 				name:""
 			});
-		successFn(cache[data.aid]);
+		successFn(cache[data.aid],cache);
 	};
-	var addPic=new tool.factory('{id:data.aid}',exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
+	var addPic=new tool.factory('{id:data.data.aid}',exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
 	/**************************************************************/
 	/*删除图片*/
 	function removePicFn(cache,data,successFn,errFn){
@@ -57,9 +57,9 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			return false;
 		}
 		cache[data.aid].list=_.reject(cache[data.aid].list,{id:data.pid});
-		successFn(cache[data.aid]);
+		successFn(cache[data.aid],cache);
 	};
-	var removePic=new tool.factory('{id:data.aid}',exports,modelName,"removePic",removePicFn);
+	var removePic=new tool.factory('{id:data.data.aid}',exports,modelName,"removePic",removePicFn);
 	/**************************************************************/
 	/*获取相册列表*/
 	function getAlbumListFn(cache,data,successFn,errFn){
@@ -76,7 +76,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			});
 		successFn(showList);
 	};
-	var getAlbumList=new tool.factory('{id:data.uid}',exports,modelName,"getAlbumList",getAlbumListFn);
+	var getAlbumList=new tool.factory('{id:data.data.uid}',exports,modelName,"getAlbumList",getAlbumListFn);
 	/**************************************************************/
 	/*设置封面*/
 	function setIconFn(cache,data,successFn,errFn){
@@ -85,6 +85,6 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			return false;
 		}
 		cache[data.aid].icon=data.url;
-		successFn(cache[data.aid]);
+		successFn(cache[data.aid],cache);
 	};
-	var setIcon=new tool.factory('{id:data.aid}',exports,modelName,"setIcon",setIconFn);
+	var setIcon=new tool.factory('{id:data.data.aid}',exports,modelName,"setIcon",setIconFn);
