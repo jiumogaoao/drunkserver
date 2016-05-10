@@ -129,7 +129,7 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
             }
           }
       function successFn(returnData){
-        if(request){
+        if(_.size(cache)){
           var total=_.size(cache);
           var totalCount=0;
           function saveSC(err,doc){
@@ -151,14 +151,15 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
         }else{
           scFn(returnData);
         }
-          
       }
       var cache={};
       if(!request){
          mainFn(cache,data.data,successFn,errFn);
        }else{
-		request=eval('('+request+')');
-        data_mg[modelName].find(request,function(err,doc){
+        console.log("request:"+JSON.stringify(request));
+		var newRequest=eval('('+request+')');
+        console.log(newRequest)
+        data_mg[modelName].find(newRequest,function(err,doc){
 			if(!err){
 				cache=_.indexBy(doc,"id");
 				mainFn(cache,data.data,successFn,errFn);

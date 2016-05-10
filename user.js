@@ -21,11 +21,8 @@
 	/********************************************************************/
 	/*登录*/
 	function loginFn(cache,data,successFn,errFn){
-		var loginResult=data_mg.user
-		_.find(cache,function(point){
-				return (point.name==data.name&&point.key==data.key)||(point.phone==data.name&&point.key==data.key)
-			});
-			if(loginResult){
+		console.log("loginFn:"+cache)
+			if(_.size(cache)){console.log(cache)
 				tokenArry[data.tk].user=_.omit(loginResult,'key');
 				successFn(tokenArry[data.tk].user);
 			}else{
@@ -41,7 +38,7 @@
 			}else{/*写入*/
 				console.log("cache:"+cache);
 				var newId=tool.uuid();
-				cache[newId]={
+				cache[newId]=new data_mg.user({
 					id:newId,
 					name:data.name,
 					phone:data.name,
@@ -109,7 +106,7 @@
 					friendGroup:{
 						"all":{id:"all",name:"我的好友"}
 					}
-				};
+				});
 				successFn(cache[newId]);
 			}
 	};	
