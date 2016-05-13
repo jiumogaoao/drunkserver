@@ -9,7 +9,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			if(!data.aid){
 				data.aid=tool.uuid();
 			};
-			cache[data.aid]={
+			cache[data.aid]=new data_mg.album({
 				id:data.aid,
 				name:data.name,
 				icon:"",
@@ -18,7 +18,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				type:data.type,
 				time:new Date().getTime(),
 				list:[]
-			};
+			});
 		successFn(cache[data.aid],cache);
 	};
 	var creat=new tool.factory(null,exports,modelName,"creat",creatFn,"user","creatAlbum");

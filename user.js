@@ -121,7 +121,7 @@
 				tokenArry[data.tk].user.friend.request.push({id:data.to,time:new Date().getTime()});
 				cache[data.to].friend.response.push({id:tokenArry[data.tk].user.id,time:new Date().getTime()});
 				tool.socket([data.to],"newFriend",tokenArry[data.tk].user);
-				successFn(tokenArry[data.tk].user);
+				successFn(tokenArry[data.tk].user,cache);
 			}else{
 				errFn("请求被拒绝","请求被拒绝");
 			}
@@ -138,7 +138,7 @@
 			cache[data.from].friend.request=_.reject(cache[data.from].friend.request,{id:data.to});
 			cache[data.to].friend.response=_.reject(cache[data.from].friend.response,{id:data.from});
 			tool.socket([data.from],"newFriend",tokenArry[data.tk].user);
-			successFn(tokenArry[data.tk].user);
+			successFn(tokenArry[data.tk].user,cache);
 	};
 	var rejectFriend=new tool.factory('{id:{$in:[data.data.to,tokenArry[data.data.tk].user.id]}}',exports,modelName,"rejectFriend",rejectFriendFn);
 	/********************************************************************/
@@ -153,7 +153,7 @@
 			cache[data.to].friend.request=_.reject(cache[data.to].friend.request,{id:tokenArry[data.tk].user.id});
 			cache[tokenArry[data.tk].user.id].friend.response=_.reject(cache[tokenArry[data.tk].user.id].friend.response,{id:data.to});
 			tool.socket([data.to],"newFriend",tokenArry[data.tk].user);
-			successFn(tokenArry[data.tk].user);
+			successFn(tokenArry[data.tk].user,cache);
 	};
 	var checkFriend=new tool.factory('{id:{$in:[data.data.to,tokenArry[data.data.tk].user.id]}}',exports,modelName,"checkFriend",checkFriendFn);
 	/********************************************************************/
@@ -167,7 +167,7 @@
 			cache[data.from].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.to});
 			cache[data.to].friend.checked=_.reject(cache[data.from].friend.checked,{id:data.from});
 			tool.socket([data.from],"newFriend",tokenArry[data.tk].user);
-			successFn(tokenArry[data.tk].user);
+			successFn(tokenArry[data.tk].user,cache);
 	};
 	var removeFriend=new tool.factory('{id:{$in:[data.data.to,tokenArry[data.data.tk].user.id]}}',exports,modelName,"removeFriend",removeFriendFn);
 	/********************************************************************/
@@ -178,7 +178,7 @@
 			return false;
 		}
 		cache[data.id].praise.push(data.zid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var praise=new tool.factory('{id:{$in:[data.data.id]}}',exports,modelName,"praise",praiseFn,"zone","praise",true);
 	/********************************************************************/
@@ -189,7 +189,7 @@
 			return false;
 		}
 		cache[data.id].praise=_.without(cache[data.id].praise,data.zid);
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var cancelPraise=new tool.factory('{id:data.data.id}',exports,modelName,"cancelPraise",cancelPraiseFn,"zone","cancelPraise",true);
 	/********************************************************************/
@@ -200,7 +200,7 @@
 			return false;
 		}
 		cache[data.id].attention.push(data.zid);
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var attention=new tool.factory('{id:data.data.id}',exports,modelName,"attention",attentionFn,"zone","attention",true);
 	/********************************************************************/
@@ -211,7 +211,7 @@
 			return false;
 		}
 		cache[data.id].attention=_.without(cache[data.id].attention,data.zid);
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var cancelAttention=new tool.factory('{id:data.data.id}',exports,modelName,"cancelAttention",cancelAttentionFn,"zone","cancelAttention",true);
 	/********************************************************************/
@@ -222,7 +222,7 @@
 			return false;
 		}
 		cache[data.id].readed.push(data.zid);
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var readed=new tool.factory('{id:data.data.id}',exports,modelName,"readed",readedFn,"zone","readed",true);
 	/********************************************************************/
@@ -233,7 +233,7 @@
 			return false;
 		}
 		cache[data.id].share.push(data.zid);
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var share=new tool.factory('{id:data.data.id}',exports,modelName,"share",shareFn,"zone","share",true);
 	/********************************************************************/
@@ -244,7 +244,7 @@
 			return false;
 		}
 		cache[data.id].reply.push({form:data.id,to:data.to,text:data.text,readed:false,time:new Date().getTime(),zid:data.zid});
-		successFn(tokenArry[data.tk].user);	
+		successFn(tokenArry[data.tk].user,cache);	
 	};
 	var reply=new tool.factory('{id:data.data.id}',exports,modelName,"reply",replyFn,"zone","reply",true);
 	/********************************************************************/
@@ -258,7 +258,7 @@
 			return false;
 		}
 		cache[tokenArry[data.tk].user.id].group.creat.push(data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var creatGroup=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"creatGroup",creatGroupFn,"group","add",true);
 	/********************************************************************/
@@ -274,7 +274,7 @@
 		_.each(data.member,function(m){
 			cache[m].talkGroup.push(data.gid);
 		});
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var creatTalkGroup=new tool.factory('{id:{$in:data.data.member}}',exports,modelName,"creatTalkGroup",creatTalkGroupFn,"talkGroup","add",true);
 	/********************************************************************/
@@ -288,7 +288,7 @@
 				data.uid=tokenArry[data.tk].user.id;
 			}
 		cache[data.uid].group.member.push(data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var joinGroup=new tool.factory('{id:data.data.uid||tokenArry[data.data.tk].user.id}',exports,modelName,"joinGroup",joinGroupFn,"group","join",true);
 	/********************************************************************/
@@ -302,7 +302,7 @@
 				data.uid=tokenArry[data.tk].user.id;
 			}
 		cache[data.uid].talkGroup.push(data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var joinTalkGroup=new tool.factory('{id:data.data.uid||tokenArry[data.data.tk].user.id}',exports,modelName,"joinTalkGroup",joinTalkGroupFn,"talkGroup","join",true);
 	/********************************************************************/
@@ -315,7 +315,7 @@
 		cache[data.uid].group.member=_.without(cache[data.uid].group.member,data.gid);
 		cache[data.uid].group.creat=_.without(cache[data.uid].group.creat,data.gid);
 		cache[data.uid].group.admin=_.without(cache[data.uid].group.admin,data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var outGroup=new tool.factory('{id:data.data.uid}',exports,modelName,"outGroup",outGroupFn,"group","out",true);
 	/********************************************************************/
@@ -326,7 +326,7 @@
 			return false;
 		}
 		cache[data.uid].talkGroup=_.without(cache[data.uid].talkGroup,data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var outTalkGroup=new tool.factory('{id:data.data.uid}',exports,modelName,"outTalkGroup",outTalkGroupFn,"talkGroup","out",true);
 	/********************************************************************/
@@ -338,7 +338,7 @@
 		}
 		cache[data.uid].group.member=_.without(cache[tokenArry[data.tk].user.id].group.member,data.gid);
 		cache[data.uid].group.admin.push(data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var addAdminGroup=new tool.factory('{id:{$in:[data.data.uid,tokenArry[data.data.tk].user.id]}}',exports,modelName,"addAdminGroup",addAdminGroupFn,"group","addAdmin",true);
 	/********************************************************************/
@@ -350,7 +350,7 @@
 		}
 		cache[data.uid].group.admin=_.without(cache[tokenArry[data.tk].user.id].group.member,data.gid);
 		cache[data.uid].group.member.push(data.gid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var cancelAdminGroup=new tool.factory('{id:{$in:[tokenArry[data.data.tk].user.id,data.data.uid]}}',exports,modelName,"cancelAdminGroup",cancelAdminGroupFn,"group","cancelAdmin",true);
 	/********************************************************************/	
@@ -361,7 +361,7 @@
 			return false;
 		}
 		cache[tokenArry[data.tk].user.id].album.push(data.aid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var creatAlbum=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"creatAlbum",creatAlbumFn,"album","creat",true);
 	/********************************************************************/
@@ -372,7 +372,7 @@
 			return false;
 		}
 		cache[tokenArry[data.tk].user.id].album=_.without(cache[tokenArry[data.tk].user.id].album,data.aid);
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var removeAlbum=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"removeAlbum",removeAlbumFn,"album","remove",true);
 	/********************************************************************/
@@ -440,7 +440,7 @@
 		data.editData=_.pick(data.editData,"name","sex","birthday","job","company","school","province","city","hometown","email","dsc");
 		cache[tokenArry[data.tk].user.id]=_.extend(cache[tokenArry[data.tk].user.id],data.editData);
 		tokenArry[data.tk].user=_.omit(cache[tokenArry[data.tk].user.id],"key");
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var editDetail=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"editDetail",editDetailFn);
 	/********************************************************************/
@@ -452,7 +452,7 @@
 		}
 		cache[tokenArry[data.tk].user.id].background=data.src;
 		tokenArry[data.tk].user.background=data.src;
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var changeBackground=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"changeBackground",changeBackgroundFn);
 	/********************************************************************/
@@ -464,7 +464,7 @@
 		}
 		cache[tokenArry[data.tk].user.id].icon=data.src;
 		tokenArry[data.tk].user.icon=data.src;
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var changeIcon=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"changeIcon",changeIconFn);
 	/********************************************************************/
@@ -476,6 +476,6 @@
 		}
 		cache[tokenArry[data.tk].user.id].dsc=data.dsc;
 		tokenArry[data.tk].user.dsc=data.dsc;
-		successFn(tokenArry[data.tk].user);
+		successFn(tokenArry[data.tk].user,cache);
 	};
 	var changeDsc=new tool.factory('{id:tokenArry[data.data.tk].user.id}',exports,modelName,"changeDsc",changeDscFn,"zone","changeDsc");
