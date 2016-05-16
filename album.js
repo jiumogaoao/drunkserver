@@ -29,7 +29,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			errFn("请先登录");
 			return false;
 		}
-		delete cache[data.aid];
+		cache[data.aid].remove();
 		successFn(true);
 	};
 	var remove=new tool.factory('{id:data.data.aid}',exports,modelName,"remove",removeFn,"user","removeAlbum");
