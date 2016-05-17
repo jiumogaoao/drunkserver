@@ -22,9 +22,6 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 	/**************************************************************/
 	/*加入组*/
 	function joinFn(cache,data,successFn,errFn){
-		if(!data.gid){
-				data.gid=tool.uuid();
-			}
 			if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -36,7 +33,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			cache[data.gid].member.push(data.uid);
 		successFn(cache[data.gid],cache);
 	};
-	var join=new tool.factory('{id:data.data.gid}',exports,modelName,"join",joinFn,"user","joinTalkGroup");
+	var join=new tool.factory('{id:data.gid}',exports,modelName,"join",joinFn,"user","joinTalkGroup");
 	/**************************************************************/
 	/*退出组*/
 	function outFn(cache,data,successFn,errFn){
@@ -48,7 +45,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 		cache[data.gid].member=_.without(cache[data.gid].member,data.uid);
 		successFn(cache[data.gid],cache);
 	};
-	var out=new tool.factory('{id:data.data.gid}',exports,modelName,"out",outFn,"user","outTalkGroup");
+	var out=new tool.factory('{id:data.gid}',exports,modelName,"out",outFn,"user","outTalkGroup");
 	/**************************************************************/
 	/*获取组信息*/
 	function getListFn(cache,data,successFn,errFn){
@@ -60,7 +57,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			});
 		successFn(returnObj);
 	};
-	var getList=new tool.factory('{id:$in:data.data.idArry}',exports,modelName,"getList",getListFn);
+	var getList=new tool.factory('{id:$in:data.idArry}',exports,modelName,"getList",getListFn);
 	/**************************************************************/
 	/*获取自己组信息*/
 	function getMyListFn(cache,data,successFn,errFn){
@@ -78,4 +75,4 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			});
 		successFn(returnObj);
 	};
-	var getMyList=new tool.factory('{member:{$in:[tokenArry[data.data.tk].user.id]}}',exports,modelName,"getMyList",getMyListFn);	
+	var getMyList=new tool.factory('{member:{$in:[tokenArry[data.tk].user.id]}}',exports,modelName,"getMyList",getMyListFn);	

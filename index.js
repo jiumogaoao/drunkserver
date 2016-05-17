@@ -156,7 +156,9 @@ tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,link
       if(!request){
          mainFn(cache,data.data,successFn,errFn);
        }else{
-		var newRequest=eval('('+request+')');
+		var newRequest=(function(data){
+       return eval('('+request+')');
+    })(data.data);
         data_mg[modelName].find(newRequest,function(err,doc){
 			if(!err){
 				cache=_.indexBy(doc,"id");
