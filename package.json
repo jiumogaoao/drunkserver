@@ -15,7 +15,8 @@
   "underscore": "latest",
   "mongoose": "latest",
   "moment": "latest",
-  "socket.io": "latest"
+  "socket.io": "latest",
+  "images":"latest"
   }
 }
 

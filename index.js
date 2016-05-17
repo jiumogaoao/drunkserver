@@ -17,11 +17,26 @@ var app = require('./server')
    , url = require("url")
    , query = require("querystring"),
    crypto = require('crypto'),
-   nodemailer = require("nodemailer");
+   nodemailer = require("nodemailer"),
+   images = require("images");
 	global._ = require("underscore")._;
   global.moment=require('moment');
 /***********************************************************************************/
 	global.tool = {};
+
+  tool.images = function(img,name,size){
+    if(!size.length){
+      return false;
+    }
+    size = _.sortBy(size,function(point){return -1*point});
+    var newId = tool.uuid();
+    var src = images(img);
+    _.each(size,function(point){
+      src.resize(point).save(name+"_"+newId+"_"+point+".jpg",{operation:100});
+    });
+    return name+"_"+newId;
+  }
+ /**********************************************************************************/ 
 	tool.uuid=function(){
 		return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 	        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -220,8 +235,6 @@ var emptyDB=function(){
   console.log("Server has started.");
 /***********************************************************************************/	
  	 var io = require('socket.io').listen(app.target)
-	
- 
  io.sockets.on('connection', function (socket) {
  	console.log("连上了");
    socket.emit('connected', { hello: 'world' });
@@ -234,6 +247,4 @@ var emptyDB=function(){
    			server[data.model][data.action](socket,data);
    		}
    	});
-
-
  });
