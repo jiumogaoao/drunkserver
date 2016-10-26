@@ -219,7 +219,7 @@ tool.socket=function(toArry,eventName,data){
 var showDB=function(){
   data_mg.find({},function(err,doc){
     console.log(doc)
-    app.target.listen(8888);
+   // app.target.listen(8888);
     console.log("Server has started.");
   })
 }
@@ -231,7 +231,7 @@ var emptyDB=function(){
 }
 	//emptyDB();
 	//showDB();
-  app.target.listen(8888);
+ // app.target.listen(8888);
   console.log("Server has started.");
 /***********************************************************************************/	
  	 var io = require('socket.io').listen(app.target)

@@ -1,4 +1,5 @@
-var http = require("http");
+var http = require("https");
+var fs = require("fs");
 var router = require("./router")
 var target = null;
 
@@ -18,7 +19,12 @@ var target = null;
     
     
   }
-  target=http.createServer(onRequest).listen(8888);
+  var opt={
+    key: fs.readFileSync('./server.key'),
+    cert: fs.readFileSync('./server.crt'),
+	requestCert: true
+	  }
+  target=http.createServer(opt,onRequest).listen(8888);
   
 
 
