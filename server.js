@@ -22,7 +22,7 @@ var target = null;
   }
   var opt={
     key: fs.readFileSync('./server.key'),
-    cert: fs.readFileSync('./server.crt'),
+    cert: fs.readFileSync('./server.pem'),
 	requestCert: true
 	  }
   //target=http.createServer(opt,onRequest).listen(8888);
