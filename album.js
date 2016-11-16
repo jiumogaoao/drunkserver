@@ -1,6 +1,42 @@
-var modelName=_.last(__filename.split("\\")).split(".")[0];
+
+	var cache={};
+	var db={};
+	var inited=false;
+	var initEnd=function(){
+		cache=db.data||{};
+		inited=true;
+		var save=setInterval(function(){
+			data_mg.update({id:modelName},{$set:{data:cache}},function(err,doc){
+				if(err){
+				console.log(err)	
+				}
+			});
+		},5000);
+	}
+	var modelName=_.last(__filename.split("\\")).split(".")[0];
+	var get=function(){
+		if(!inited){/*没初始，先初始*/
+			data_mg.findOne({id:modelName},function(err,doc){
+				if(err||!doc){
+					db=new data_mg({id:modelName,data:{}});
+					db.save(function(err){
+						if(err){
+							console.log(err);
+						}else{
+							initEnd();
+						}
+					});
+				}else{
+					db=doc;
+					initEnd();
+				}
+			})
+				};
+	}
+	get();
+	/**************************************************************/
 	/*创建相册*/
-	function creatFn(cache,data,successFn,errFn){
+	function creatFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -9,7 +45,7 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			if(!data.aid){
 				data.aid=tool.uuid();
 			};
-			cache[data.aid]=new data_mg.album({
+			cache[data.aid]={
 				id:data.aid,
 				name:data.name,
 				icon:"",
@@ -18,24 +54,24 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				type:data.type,
 				time:new Date().getTime(),
 				list:[]
-			});
-		successFn(cache[data.aid],cache);
+			};
+		successFn(cache[data.aid]);
 	};
-	var creat=new tool.factory(null,exports,modelName,"creat",creatFn,"user","creatAlbum");
+	var creat=new tool.factory(exports,modelName,"creat",creatFn,"user","creatAlbum");
 	/**************************************************************/
 	/*删除相册*/
-	function removeFn(cache,data,successFn,errFn){
+	function removeFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
 		}
-		cache[data.aid].remove();
+		delete cache[data.aid];
 		successFn(true);
 	};
-	var remove=new tool.factory('{id:data.aid}',exports,modelName,"remove",removeFn,"user","removeAlbum");
+	var remove=new tool.factory(exports,modelName,"remove",removeFn,"user","removeAlbum");
 	/**************************************************************/
 	/*添加图片*/
-	function addPicFn(cache,data,successFn,errFn){
+	function addPicFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -46,23 +82,23 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 				time:new Date().getTime(),
 				name:""
 			});
-		successFn(cache[data.aid],cache);
+		successFn(cache[data.aid]);
 	};
-	var addPic=new tool.factory('{id:data.aid}',exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
+	var addPic=new tool.factory(exports,modelName,"addPic",addPicFn,"zone","addAlbumPic");
 	/**************************************************************/
 	/*删除图片*/
-	function removePicFn(cache,data,successFn,errFn){
+	function removePicFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
 		}
 		cache[data.aid].list=_.reject(cache[data.aid].list,{id:data.pid});
-		successFn(cache[data.aid],cache);
+		successFn(cache[data.aid]);
 	};
-	var removePic=new tool.factory('{id:data.aid}',exports,modelName,"removePic",removePicFn);
+	var removePic=new tool.factory(exports,modelName,"removePic",removePicFn);
 	/**************************************************************/
 	/*获取相册列表*/
-	function getAlbumListFn(cache,data,successFn,errFn){
+	function getAlbumListFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
@@ -76,15 +112,15 @@ var modelName=_.last(__filename.split("\\")).split(".")[0];
 			});
 		successFn(showList);
 	};
-	var getAlbumList=new tool.factory('{id:data.uid}',exports,modelName,"getAlbumList",getAlbumListFn);
+	var getAlbumList=new tool.factory(exports,modelName,"getAlbumList",getAlbumListFn);
 	/**************************************************************/
 	/*设置封面*/
-	function setIconFn(cache,data,successFn,errFn){
+	function setIconFn(data,successFn,errFn){
 		if(!tokenArry[data.tk].user){
 			errFn("请先登录");
 			return false;
 		}
 		cache[data.aid].icon=data.url;
-		successFn(cache[data.aid],cache);
+		successFn(cache[data.aid]);
 	};
-	var setIcon=new tool.factory('{id:data.aid}',exports,modelName,"setIcon",setIconFn);
+	var setIcon=new tool.factory(exports,modelName,"setIcon",setIconFn);

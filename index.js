@@ -5,21 +5,20 @@
    var dbURL="mongodb://127.0.0.1:27017/drunk"
    global.db = require("mongoose").connect(dbURL);
    global.data_mg = {}
-   data_mg.album = require('./data/models/album');
-   data_mg.group = require('./data/models/group');
-   data_mg.message = require('./data/models/message');
-   data_mg.talkGroup = require('./data/models/talkGroup');
-   data_mg.user = require('./data/models/user');
-   data_mg.zone = require('./data/models/zone');
+   //data_mg.album = require('./data/models/album');
+   //data_mg.group = require('./data/models/group');
+   //data_mg.message = require('./data/models/message');
+  // data_mg.talkGroup = require('./data/models/talkGroup');
+   //data_mg.user = require('./data/models/user');
+   //data_mg.zone = require('./data/models/zone');
 /**********************************************************************************/   
 var app = require('./server')
   , router = require('./router')
    , url = require("url")
    , query = require("querystring"),
    crypto = require('crypto'),
-   nodemailer = require("nodemailer"),
-   images = require("images");
-	global._ = require("underscore")._;
+   nodemailer = require("nodemailer");
+   global._ = require("underscore")._;
   global.moment=require('moment');
 /***********************************************************************************/
 	global.tool = {};
@@ -207,14 +206,14 @@ tool.socket=function(toArry,eventName,data){
 /***********************************************************************************/
 	global.tokenArry={}; 
 /************************************************************************/
-   global.server = {
-    user : require('./user'),
-      group : require('./group'),
-      album : require('./album'),
-      message : require('./message'),
-      zone : require('./zone'),
-      talkGroup : require('./talkGroup')
-   }
+ //  global.server = {
+ //   user : require('./user'),
+ //     group : require('./group'),
+ //     album : require('./album'),
+ //     message : require('./message'),
+ //     zone : require('./zone'),
+ //     talkGroup : require('./talkGroup')
+ //  }
 /***********************************************************************************/
 var showDB=function(){
   data_mg.find({},function(err,doc){
@@ -231,7 +230,7 @@ var emptyDB=function(){
 }
 	//emptyDB();
 	//showDB();
- // app.target.listen(8888);
+  app.target.listen(8888);
   console.log("Server has started.");
 /***********************************************************************************/	
  	 var io = require('socket.io').listen(app.target)
