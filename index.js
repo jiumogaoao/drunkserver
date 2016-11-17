@@ -20,18 +20,7 @@ var app = require('./server')
 /***********************************************************************************/
 	global.tool = {};
 
-  tool.images = function(img,name,size){
-    if(!size.length){
-      return false;
-    }
-    size = _.sortBy(size,function(point){return -1*point});
-    var newId = tool.uuid();
-    var src = images(img);
-    _.each(size,function(point){
-      src.resize(point).save(name+"_"+newId+"_"+point+".jpg",{operation:100});
-    });
-    return name+"_"+newId;
-  }
+  tool.images = require('./tool/images');
  /**********************************************************************************/ 
 	tool.uuid=function(){
 		return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -46,144 +35,9 @@ var app = require('./server')
 		return md5.digest('hex');
 	}
 /***********************************************************************************/
-	tool.sendEmail=function(to,title,text,html,callback){
-// 开启一个 SMTP 连接池
-var smtpTransport = nodemailer.createTransport({
-    service: 'qq',
-    auth: {
-        user: '394127821@qq.com',
-        pass: 'jiumogaoao86'
-    }
-});
-		var mailOptions = {
-  from: "jiumogaoao<394127821@qq.com>", // 发件地址
-  to: to, // 收件列表
-  subject: title, // 标题
-  text: text,
-  html: html // html 内容
-}
-// 发送邮件
-smtpTransport.sendMail(mailOptions, function(error, info){
-  if(error){
-    console.log(error);
-	if(callback){
-		callback(false);
-	}
-  }else{
-    console.log("Message sent: " + info.response);
-	if(callback){
-		callback(true);
-	}
-  }
-  smtpTransport.close(); // 如果没用，关闭连接池
-});
-}
+	tool.sendEmail=require('./tool/sendEmail');
 /***********************************************************************************/
-tool.factory=function(request,exports,modelName,actionName,mainFn,linkModel,linkAction,reactive){
-  if(!exports||!modelName||!actionName||!mainFn){
-    return false;
-  }
-  var main=function(socket,data,fn,end,reactiveData){
-      console.log("reactiveData:"+reactiveData);
-      console.log(modelName+"/"+actionName);
-      if(typeof(data.data)=="string"){
-        data.data=JSON.parse(data.data)
-        }
-      console.log(data.data);
-      var result={code:0,
-        time:0,
-        data:{},
-        success:false,
-        message:""};
-      var returnFn=function(){
-        if(socket){
-        socket.emit(modelName+"_"+actionName,result);
-       }
-        else if(fn){
-          var returnString = JSON.stringify(result);
-          fn(returnString);
-        }
-      }
-      function errFn(err,message){
-        result.success=false;
-        console.log(err);
-        result.message=message;
-        returnFn();
-      }
-	  function scFn(returnData){
-            if(linkModel&&linkAction){
-                if(end){
-                if(reactive){
-                  result.data=reactiveData;
-                }else{
-                  result.data=returnData;
-                }
-                result.success=true;
-                result.code=1;
-                result.time=new Date().getTime();
-                console.log(result)
-                returnFn();
-              }else{
-                var activeData={};
-                if(!reactive){
-                  activeData=returnData;
-                }
-                server[linkModel][linkAction](socket,data,fn,true,activeData);  
-              }
-            }else{
-              result.data=returnData;
-                result.success=true;
-                result.code=1;
-                result.time=new Date().getTime();
-                console.log(result)
-                returnFn();
-            }
-          }
-      function successFn(returnData,cache){
-        if(_.size(cache)){
-          var total=_.size(cache);
-          var totalCount=0;
-          function saveSC(err,doc){
-            if(err){
-              result.success=false;
-              console.log(err);
-              result.message=message;
-              returnFn();
-            }else{
-              totalCount++;
-              if(total==totalCount){
-                scFn(returnData);
-              }
-            }
-          }
-          _.each(cache,function(point){
-            point.save(saveSC);
-          });
-        }else{
-          scFn(returnData);
-        }
-      }
-      var cache={};
-      if(!request){
-         mainFn(cache,data.data,successFn,errFn);
-       }else{
-		var newRequest=(function(data){
-       return eval('('+request+')');
-    })(data.data);
-        data_mg[modelName].find(newRequest,function(err,doc){
-			if(!err){
-				cache=_.indexBy(doc,"id");
-				mainFn(cache,data.data,successFn,errFn);
-				}else{
-					errFn(err);
-					}
-        });
-       }
-  }
-  exports[actionName]=function(socket,data,fn,end,reactiveData){
-    main(socket,data,fn,end,reactiveData);
-  }
-}
+tool.factory=require('./tool/factory');
 /***********************************************************************************/
 tool.socket=function(toArry,eventName,data){
   var sendArry=_.filter(tokenArry,function(point){
@@ -203,14 +57,14 @@ tool.socket=function(toArry,eventName,data){
 /***********************************************************************************/
 	global.tokenArry={}; 
 /************************************************************************/
- //  global.server = {
- //   user : require('./user'),
- //     group : require('./group'),
- //     album : require('./album'),
- //     message : require('./message'),
- //     zone : require('./zone'),
- //     talkGroup : require('./talkGroup')
- //  }
+   global.server = {
+    user : require('./dao/user'),
+    admin : require('./dao/admin'),
+   config : require('./dao/config'),
+   express : require('./dao/express'),
+   good : require('./dao/good'),
+   shop : require('./dao/shop')
+   }
 /***********************************************************************************/
 var showDB=function(){
   _.each(data_mg,function(val,index){
@@ -263,7 +117,7 @@ var initDB=function(){
       userType:["游客","买家","卖家"]
     });
     initConfig.save(function(){
-      console.log("admin:config");
+      console.log("config:ready");
       initCallback();
     });
 }
