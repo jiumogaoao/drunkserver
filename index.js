@@ -10,7 +10,7 @@
    data_mg.shop = require('./data/models/shop');
 /**********************************************************************************/   
 var app = require('./server')
-  , router = require('./router')
+ // , router = require('./router')
    , url = require("url")
    , query = require("querystring"),
    crypto = require('crypto'),
@@ -37,7 +37,7 @@ var app = require('./server')
 /***********************************************************************************/
 	tool.sendEmail=require('./tool/sendEmail');
 /***********************************************************************************/
-tool.factory=require('./tool/factory');
+//tool.factory=require('./tool/factory');
 /***********************************************************************************/
 tool.socket=function(toArry,eventName,data){
   var sendArry=_.filter(tokenArry,function(point){
@@ -85,9 +85,15 @@ var emptyDB=function(){
     }
   }
   _.each(data_mg,function(val,index){
-    val.remove({},function(err){
-      console.log(index+":remove");
-      emptyCallback();
+    val.remove({},function(err)
+      {
+        if(err){
+            console.log(index+"err:");
+            console.log(err);
+        }else{
+            console.log(index+":remove");
+            emptyCallback();
+        }
     });
   })
 }
@@ -101,9 +107,14 @@ var initDB=function(){
       }
     }
     var initAdmin = new data_mg.admin({id:"0000",name:"admin",key:"##jiumo86;;",type:0});
-    initAdmin.save(function(){
-      console.log("admin:ready");
-      initCallback();
+    initAdmin.save(function(err){
+      if(err){
+        console.log("admin init err:");
+        console.log(err);
+      }else{
+        console.log("admin:ready");
+        initCallback();
+      } 
     });
     var initConfig = new data_mg.config({
       version:"0.0.0.0",
@@ -116,9 +127,14 @@ var initDB=function(){
       cityID:[{id:"000",name:"广州"}],
       userType:["游客","买家","卖家"]
     });
-    initConfig.save(function(){
-      console.log("config:ready");
-      initCallback();
+    initConfig.save(function(err){
+      if(err){
+        console.log("config init err:");
+        console.log(err);
+      }else{
+        console.log("config:ready");
+        initCallback();
+      }
     });
 }
 /***********************************************************************************/
@@ -129,11 +145,7 @@ var readyDB=function(){
      var io = require('socket.io').listen(app.target)
    io.sockets.on('connection', function (socket) {
     console.log("连上了");
-     socket.emit('connected', { hello: 'world' });
-     socket.on('tk',function(data){
-      tokenArry[data.tk].socket=socket;
-      console.log('tk注册成功');
-     });
+     socket.emit('connected', { connect: true });
      socket.on('server',function(data){
         if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
           server[data.model][data.action](socket,data);
