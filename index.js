@@ -37,24 +37,6 @@ var app = require('./server')
 /***********************************************************************************/
 	tool.sendEmail=require('./tool/sendEmail');
 /***********************************************************************************/
-//tool.factory=require('./tool/factory');
-/***********************************************************************************/
-tool.socket=function(toArry,eventName,data){
-  var sendArry=_.filter(tokenArry,function(point){
-      return point.user&&_.some(toArry,function(to){
-        return to===point.user.id;
-      });
-  });
-  _.each(sendArry,function(send){
-    if(send.socket){
-      send.socket.emit('event',{
-        eventName:eventName,
-        data:data
-      });
-    }
-  })
-};
-/***********************************************************************************/
 	global.tokenArry={}; 
 /************************************************************************/
    global.server = {
@@ -148,7 +130,7 @@ var readyDB=function(){
      socket.emit('connected', { connect: true });
      socket.on('server',function(data){
         if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
-          server[data.model][data.action](socket,data);
+          server[data.model][data.action](socket,data.data);
         }
       });
    });
