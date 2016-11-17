@@ -1,16 +1,13 @@
-//var server = require("./server");
-//var router = require("./router");
-//server.start(router.route);
-
-   var dbURL="mongodb://127.0.0.1:27017/drunk"
+   var dbURL="mongodb://127.0.0.1:27017/pinleGao"
    global.db = require("mongoose").connect(dbURL);
-   global.data_mg = {}
-   //data_mg.album = require('./data/models/album');
-   //data_mg.group = require('./data/models/group');
-   //data_mg.message = require('./data/models/message');
-  // data_mg.talkGroup = require('./data/models/talkGroup');
-   //data_mg.user = require('./data/models/user');
-   //data_mg.zone = require('./data/models/zone');
+   global.version = "0.0.0.0";
+   global.data_mg = {};
+   data_mg.user = require('./data/models/user');
+   data_mg.admin = require('./data/models/admin');
+   data_mg.config = require('./data/models/config');
+   data_mg.express = require('./data/models/express');
+   data_mg.good = require('./data/models/good');
+   data_mg.shop = require('./data/models/shop');
 /**********************************************************************************/   
 var app = require('./server')
   , router = require('./router')
@@ -216,34 +213,79 @@ tool.socket=function(toArry,eventName,data){
  //  }
 /***********************************************************************************/
 var showDB=function(){
-  data_mg.find({},function(err,doc){
-    console.log(doc)
-   // app.target.listen(8888);
-    console.log("Server has started.");
-  })
+  _.each(data_mg,function(val,index){
+    console.log(index+":");
+    val.find({},function(err,doc){
+      console.log(doc)
+    })
+  });
+  readyDB();
 }
 /***********************************************************************************/
 var emptyDB=function(){
-  data_mg.remove({},function(err){
-    showDB();
-  });
+  var count=0;
+  var emptyCallback=function(){
+    count++;
+    if(count==_.size(data_mg)){
+      initDB();
+    }
+  }
+  _.each(data_mg,function(val,index){
+    val.remove({},function(err){
+      console.log(index+":remove");
+      emptyCallback();
+    });
+  })
 }
-	//emptyDB();
-	//showDB();
-  app.target.listen(8888);
-  console.log("Server has started.");
-/***********************************************************************************/	
- 	 var io = require('socket.io').listen(app.target)
- io.sockets.on('connection', function (socket) {
- 	console.log("连上了");
-   socket.emit('connected', { hello: 'world' });
-   socket.on('tk',function(data){
-    tokenArry[data.tk].socket=socket;
-    console.log('tk注册成功');
+/**********************************************************************************/
+var initDB=function(){
+    var count=0;
+    var initCallback=function(){
+      count++;
+      if(count==2){
+        readyDB();
+      }
+    }
+    var initAdmin = new data_mg.admin({id:"0000",name:"admin",key:"##jiumo86;;",type:0});
+    initAdmin.save(function(){
+      console.log("admin:ready");
+      initCallback();
+    });
+    var initConfig = new data_mg.config({
+      version:"0.0.0.0",
+      adminType:["超级管理员"],
+      expressID:[],
+      expressState:["待支付","待发货","待揽件","待收货","已收货","退货"],
+      goodType:["杂货"],
+      shopType:["杂货"],
+      provinceID:[{id:"000",name:"广东"}],
+      cityID:[{id:"000",name:"广州"}],
+      userType:["游客","买家","卖家"]
+    });
+    initConfig.save(function(){
+      console.log("admin:config");
+      initCallback();
+    });
+}
+/***********************************************************************************/
+var readyDB=function(){
+      app.target.listen(8888);
+    console.log("Server has started.");
+  /***********************************************************************************/ 
+     var io = require('socket.io').listen(app.target)
+   io.sockets.on('connection', function (socket) {
+    console.log("连上了");
+     socket.emit('connected', { hello: 'world' });
+     socket.on('tk',function(data){
+      tokenArry[data.tk].socket=socket;
+      console.log('tk注册成功');
+     });
+     socket.on('server',function(data){
+        if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
+          server[data.model][data.action](socket,data);
+        }
+      });
    });
-   socket.on('server',function(data){
-   		if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
-   			server[data.model][data.action](socket,data);
-   		}
-   	});
- });
+}
+	emptyDB();
+  //showDB();

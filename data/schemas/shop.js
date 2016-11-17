@@ -1,14 +1,16 @@
 var mongoose = require('mongoose');
 var MemberSchema = new mongoose.Schema({
 	id:String,
-	time:Number,
-	from:String,
 	name:String,
 	icon:String,
-	to:String,
-	state:Number,
+	background:String,
+	dsc:String,
+	provinceID:String,
+	cityID:String,
+	email:String,
 	type:String,
-	main:String,
-	readed:Boolean
+	visitCount:Number,
+	shellCount:Number,
+	shellList:Array
 	});
 module.exports = MemberSchema;

@@ -1,8 +1,11 @@
 var mongoose = require('mongoose');
 var MemberSchema = new mongoose.Schema({
 	id:String,
-	name:String,
-	dsc:String,
-	member:Array
+	goodList:Array,
+	state:Number,
+	stateList:Array,
+	expressCompany:String,
+	expressID:String,
+	updataTime:Number
 	});
 module.exports = MemberSchema;

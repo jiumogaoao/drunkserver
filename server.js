@@ -28,8 +28,8 @@ var target = null;
     
   }
   var opt={
-    key: fs.readFileSync('/alidata/www/default/drunkserver/server.key'),
-    cert: fs.readFileSync('/alidata/www/default/drunkserver/server.pem'),
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.pem'),
 	requestCert: true
 	  }
   target=http.createServer(opt,onRequest).listen(8888);
