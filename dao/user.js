@@ -1,8 +1,4 @@
 var user={}
-user.login=function(socket,data){
-	console.log(data);
-	socket.emit("login",{login:true})	
-}
 user.regest=function(socket,data){
 	function noRegested(){
 		var newId=tool.uuid();
@@ -13,7 +9,9 @@ user.regest=function(socket,data){
 				socket.emit("err",{errDsc:"添加用户错误"});
 			}else{
 				socket.userId=doc["_id"];
-				socket.emit("regest",{id:doc["_id"],userName:data.userName,phone:data.phone});
+				loginArry["ID_"+doc["_id"]]=socket;
+				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				socket.emit("regest",docA);
 			}
 		});
 	}
@@ -23,12 +21,37 @@ user.regest=function(socket,data){
 			socket.emit("err",{errDsc:"查询用户错误"});
 		}else{
 			if(docs.length){
-			console.log(docs);
 			socket.emit("err",{errDsc:"用户名或手机已注册"});	
 			}else{
 			noRegested();
 			}
 		}
 	});
+}
+user.login=function(socket,data){
+	data_mg.user.findOne({userName:data.userName,key:data.key},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"查询用户错误"});
+		}else{
+			if(doc){
+				socket.userId=doc["_id"];
+				if(loginArry["ID_"+doc["_id"]]){
+					delete loginArry["ID_"+doc["_id"]].userId;
+				}
+				global.loginArry["ID_"+doc["_id"]]=socket;
+				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				socket.emit("login",docA);
+			}else{
+				socket.emit("err",{errDsc:"用户名或密码错误"});
+			}
+		}
+	})
+}
+user.logout=function(socket,data){
+	delete loginArry["ID_"+socket.userId];
+	delete socket.userId;
+	console.log(socket)
+	socket.emit("logout",{logout:true});
 }
 module.exports=user;
