@@ -1,5 +1,5 @@
-var http = require("https");
-//var http = require("http");
+//var http = require("https");
+var http = require("http");
 var fs = require("fs");
 //var router = require("./router")
 var target = null;
@@ -32,8 +32,8 @@ var target = null;
     cert: fs.readFileSync('server.pem'),
 	requestCert: true
 	  }
-  target=http.createServer(opt,onRequest).listen(8888);
- // target=http.createServer(onRequest);
+  //target=http.createServer(opt,onRequest).listen(8888);
+  target=http.createServer(onRequest).listen(8888);
 
 
 exports.target = target;
