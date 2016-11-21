@@ -127,14 +127,25 @@ var readyDB=function(){
      var io = require('socket.io').listen(app.target)
    io.sockets.on('connection', function (socket) {
     console.log("连上了");
-     socket.emit('connected', { connect: true });
+     socket.emit('connected',  {'connected':true} );
+
      socket.on('server',function(data){
         if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
           server[data.model][data.action](socket,data.data);
         }
       });
+
+     socket.on('tk',  function(data){
+        _.each(global.loginArry,function(val){
+          if(val.tk==data.tk){
+            socket.userId=val.userId;
+            val.socket=socket;
+            socket.emit('tk',{tk:data.tk});
+          }
+        })
+     } );
    });
    
 }
-	emptyDB();
-  //showDB();
+	//emptyDB();
+  showDB();
