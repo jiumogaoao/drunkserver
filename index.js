@@ -101,10 +101,13 @@ var initDB=function(){
     var initConfig = new data_mg.config({
       version:"0.0.0.0",
       adminType:["超级管理员"],
-      expressID:[],
+      expressID:[{id:"001",name:"某个快递"}],
       expressState:["待支付","待发货","待揽件","待收货","已收货","退货"],
-      goodType:["杂货"],
-      shopType:["杂货"],
+      goodType:[{id:"001",name:"杂货",icon:"#",dsc:"描述",subType:[
+        {id:"001",name:"日用",state:[
+          {id:"001",name:"型号",option:[{label:"s",value:"0"},{label:"m",value:"1"},{label:"l",value:"2"}]}
+        ]}
+      ]}],
       provinceID:[{id:"000",name:"广东"}],
       cityID:[{id:"000",name:"广州"}],
       userType:["游客","买家","卖家"]
@@ -124,17 +127,23 @@ var readyDB=function(){
       app.target.listen(8888);
     console.log("Server has started.");
   /***********************************************************************************/ 
-     var io = require('socket.io').listen(app.target)
+   global.io = require('socket.io').listen(app.target)
    io.sockets.on('connection', function (socket) {
     console.log("连上了");
      socket.emit('connected',  {'connected':true} );
-
+     
      socket.on('server',function(data){
         if(data&&data.model&&data.action&&server[data.model]&&server[data.model][data.action]){
           server[data.model][data.action](socket,data.data);
         }
       });
-
+     data_mg.config.findOne({version:version},function(err,doc){
+        if(err){
+          socket.emit("err",{errDsc:"获取配置信息错误"});
+        }else{
+          socket.emit("config",doc);
+        }
+     });
      socket.on('tk',  function(data){
         _.each(global.loginArry,function(val){
           if(val.tk==data.tk){
