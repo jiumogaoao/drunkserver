@@ -8,6 +8,7 @@
    data_mg.express = require('./data/models/express');
    data_mg.good = require('./data/models/good');
    data_mg.shop = require('./data/models/shop');
+   data_mg.type = require('./data/models/type');
 /**********************************************************************************/   
 var app = require('./server')
  // , router = require('./router')
@@ -45,7 +46,8 @@ var app = require('./server')
    config : require('./dao/config'),
    express : require('./dao/express'),
    good : require('./dao/good'),
-   shop : require('./dao/shop')
+   shop : require('./dao/shop'),
+   type : require('./dao/type')
    }
 /***********************************************************************************/
 var showDB=function(){
@@ -103,11 +105,6 @@ var initDB=function(){
       adminType:["超级管理员"],
       expressID:[{id:"001",name:"某个快递"}],
       expressState:["待支付","待发货","待揽件","待收货","已收货","退货"],
-      goodType:[{id:"001",name:"杂货",icon:"#",dsc:"描述",subType:[
-        {id:"001",name:"日用",state:[
-          {id:"001",name:"型号",option:[{label:"s",value:"0"},{label:"m",value:"1"},{label:"l",value:"2"}]}
-        ]}
-      ]}],
       provinceID:[{id:"000",name:"广东"}],
       cityID:[{id:"000",name:"广州"}],
       userType:["游客","买家","卖家"]
@@ -144,6 +141,13 @@ var readyDB=function(){
           socket.emit("config",doc);
         }
      });
+     data_mg.type.find({},function(err,docs){
+        if(err){
+          socket.emit("err",{errDsc:"获取类型错误"});
+        }else{
+          socket.emit("type",docs);
+        }
+     });
      socket.on('tk',  function(data){
         _.each(global.loginArry,function(val){
           if(val.tk==data.tk){
@@ -156,5 +160,5 @@ var readyDB=function(){
    });
    
 }
-	//emptyDB();
-  showDB();
+	emptyDB();
+  //showDB();

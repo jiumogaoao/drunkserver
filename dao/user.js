@@ -2,7 +2,7 @@ var user={}
 user.regest=function(socket,data){
 	function noRegested(){
 		var newId=tool.uuid();
-		var newUser=new data_mg.user({id:newId,userName:data.userName,phone:data.phone,key:data.key});
+		var newUser=new data_mg.user({id:newId,userName:data.userName,phone:data.phone,key:data.key,type:1});
 		newUser.save(function(err,doc){
 			if(err){
 				console.log(err);

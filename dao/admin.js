@@ -35,7 +35,7 @@ admin.add=function(socket,data){
 					socket.emit("err",{errDsc:"添加管理员失败"});
 					return false;
 				}
-				io.to('admin').emit("adminAdd",_.pick(doc,"name","type","_id"));
+				io.sockets.to('admin').emit("adminAdd",_.pick(doc,"name","type","_id"));
 			});
 	}
 	data_mg.admin.find({name:data.name},function(err,docs){
@@ -56,7 +56,7 @@ admin.remove=function(socket,data){
 		}else{
 			doc.remove(function(err){
 				if(err){socket.emit("err",{errDsc:"删除管理员错误"});}else{
-					io.to('admin').emit("adminRemove",{_id:data.id});
+					io.sockets.to('admin').emit("adminRemove",{_id:data.id});
 				}
 			});
 		}
@@ -74,7 +74,7 @@ admin.change=function(socket,data){
 				if(err){
 					socket.emit("err",{errDsc:"修改管理员错误"});
 				}else{
-					io.to('admin').emit("adminChange",_.pick(doc,"name","type","_id"));
+					io.sockets.to('admin').emit("adminChange",_.pick(doc,"name","type","_id"));
 				}
 			});
 		}

@@ -1,6 +1,88 @@
 var shop={}
-shop.login=function(socket,data){
-	
+shop.add=function(socket,data){
+	function changeUserType(){
+		data_mg.user.update({_id:socket.userId},{$set:{type:2}},function(err,doc){
+			if(err){
+				console.log(err);
+				socket.emit("err",{errDsc:"商家状态切换失败"});
+			}else{
+				socket.type=2;
+				socket.emit("shopAdd",{shopAdd:true});
+			}
+		});
+	}
+	function noShop(){
+		var newShop=new data_mg.shop({id:socket.userId,
+	name:data.name,
+	icon:data.icon,
+	background:data.background,
+	dsc:data.dsc,
+	provinceID:data.provinceID,
+	cityID:data.cityID,
+	email:data.email,
+	type:data.type,
+	visitCount:0,
+	shellCount:0,
+	shellList:[]});
+		newShop.save(function(err,doc){
+			if(err){
+				console.log(err);
+				socket.emit("err",{errDsc:"创建店铺失败"});
+			}else{
+				changeUserType();
+			}
+		});
+	}
+	data_mg.shop.findOne({name:data.name},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"查询商家错误"});
+		}else if(doc){
+			socket.emit("err",{errDsc:"店名已有"});
+		}else{
+			noShop();
+		}
+	});
 }
-
+shop.remove=function(socket,data){
+	function changeUser(){
+		data.user.update({_id:socket.userId},{$set:{type:1}},function(err){
+			if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"修改用户状态错误"});
+			}else{
+				socket.type=1;
+				socket.emit("shopAdd",{shopRemove:true});
+			}
+		});
+	}
+	function removeShop(){
+		data.shop.remove({id:socket.userId},function(err){
+			if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"删除店铺错误"});
+			}else{
+				changeUser();
+			}
+		});
+	}
+	data.good.remove({shop:socket.userId},function(err){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"商品清理错误"});
+		}else{
+			removeShop();
+		}
+	});
+}
+shop.change=function(socket,data){
+	data.shop.undate({id:socket.userId},{$set:data},function(){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"修改店铺失败"});
+		}else{
+			socket.emit("shopChange",{shopChange:true});
+		}
+	});
+}
 module.exports=shop;
