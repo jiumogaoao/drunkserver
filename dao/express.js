@@ -1,6 +1,74 @@
 var express={}
-express.login=function(socket,data){
-	
+express.addShoppingCart=function(socket,data){
+	data_mg.user.findOne({_id:socket.userId},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取用户信息错误"});
+		}else{
+			doc.shoppingCart=_.uniq(doc.shoppingCart.push(data._id));
+			doc.save(function(errA,docA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新用户信息错误"});
+				}else{
+					socket.emit("addShoppingCart",data);
+				}
+			});
+		}
+	});
 }
-
+express.removeShoppingCart=function(socket,data){
+	data_mg.user.findOne({_id:socket.userId},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取用户信息错误"});
+		}else{
+			doc.shoppingCart=_.without(doc.shoppingCart,data._id);
+			doc.save(function(errA,docA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新用户信息错误"});
+				}else{
+					socket.emit("removeShoppingCart",data);
+				}
+			});
+		}
+	});
+}
+express.add=function(socket,data){
+	var total=0;
+	var shop=[];
+	_.each(data.goodList,function(n){
+		total+=n.price*n.count;
+		shop.push(n.shop);
+	});
+	shop=_.uniq(shop);
+	var newExpress=new data_mg.express({user:socket.userId,
+	goodList:data.goodList,
+	state:0,
+	stateList:[],
+	expressCompany:"",
+	expressID:"",
+	total:total,
+	shopList:shop,
+	provinceID:data.provinceID,
+	cityID:data.cityID,
+	place:data.place,
+	phone:data.phone,
+	name:data.name,
+	updataTime:new Date().getTime()});
+	newExpress.save(function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"生成订单错误"});
+		}else{
+			socket.emit("buyAdd",doc);
+			_.each(shop,function(n){
+				if(loginArry["ID_"+n]&&loginArry["ID_"+n].socket){
+					loginArry["ID_"+n].socket.emit("sellAdd",doc);
+				}
+			})
+		}
+	});
+}
 module.exports=express;

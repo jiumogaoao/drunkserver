@@ -32,7 +32,7 @@ type.remove=function(socket,data){
 			io.sockets.emit("typeRemove",data);
 		}
 	});
-
+}
 type.change=function(socket,data){
 	data_mg.type.update({_id:data._id},{$set:data},function(err){
 		if(err){

@@ -9,6 +9,7 @@ var MemberSchema = new mongoose.Schema({
 	count:Number,
 	price:Number,
 	type:String,
+	subType:String,
 	shellCount:Number,
 	visitCount:Number,
 	start:Number,

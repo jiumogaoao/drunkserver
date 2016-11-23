@@ -1,6 +1,32 @@
 var good={}
-good.login=function(socket,data){
-	
+good.add=function(socket,data){
+	data.shellCount=0;
+	data.visitCount=0;
+	var newGood=new data_mg.good(data);
+	newGood.save(function(err,doc){
+		if(err){
+			socket.emit("err",{errDsc:"添加商品错误"});
+		}else{
+			socket.emit("goodAdd",{goodAdd:doc});
+		}
+	});
 }
-
+good.change=function(socket,data){
+	data_mg.good.update({_id:data._id,shop:socket.userId},{$set:data},function(err,doc){
+		if(err){
+			socket.emit("err",{errDsc:"修改商品错误"});
+		}else{
+			socket.emit("goodChange",doc);
+		}
+	});
+}
+good.remove=function(socket,data){
+	data_mg.good.remove({_id:data._id,shop:socket.userId},function(err){
+		if(err){
+			socket.emit("err",{errDsc:"删除商品错误"});
+		}else{
+			socket.emit("goodRemove",data);
+		}
+	});
+}
 module.exports=good;
