@@ -195,4 +195,177 @@ express.arrive=function(socket,data){
 		}
 	})
 }
+express.check=function(socket,data){
+	function payMoney(doc){
+		data_mg.user.update({_id:data.shop},{$inc:{balance:data.total}},function(err){
+			if(err){
+				console.log(err);
+				socket.emit("err",{errDsc:"打款错误"});
+			}else{
+				if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+				}
+				if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+						loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+				}
+			}
+		});
+	}
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=5;
+			doc.stateList.push("买家已收货，交易完成");
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					payMoney(doc);
+				}
+			})
+		}
+	})
+}
+express.back=function(socket,data){
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=6;
+			doc.stateList.push("买家申请退货，待确认");
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+					}
+					if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+							loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+					}
+				}
+			})
+		}
+	})
+}
+express.backCheck=function(socket,data){
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=7;
+			doc.stateList.push("卖家确认退货，请尽快联系快递");
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+					}
+					if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+							loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+					}
+				}
+			})
+		}
+	})
+}
+express.backSend=function(socket,data){
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=8;
+			doc.stateList.push("退货已发出，请尽快确认");
+			doc.expressCompany=data.expressCompany;
+			doc.expressID=data.expressID;
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+					}
+					if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+							loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+					}
+				}
+			})
+		}
+	})
+}
+express.backSuccess=function(socket,data){
+	function moneyBack(doc){
+		data_mg.user.undate({_id:doc.user},{$inc:{balance:data.total}},function(err){
+			if(err){
+				console.log(err);
+				socket.emit("err",{errDsc:"退款错误"});
+			}else{
+				if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+				}
+				if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+						loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+				}
+			}
+		});
+	}
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=9;
+			doc.stateList.push("退货成功，已退款");
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					moneyBack(doc);
+					
+				}
+			})
+		}
+	})
+}
+express.cancel=function(socket,data){
+	data_mg.express.findOne({_id:data._id},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取订单信息错误"});
+		}else{
+			doc.state=10;
+			doc.stateList.push("订单已取消");
+			doc.updataTime.push(new Date().getTime());
+			doc.save(function(errA){
+				if(errA){
+					console.log(errA);
+					socket.emit("err",{errDsc:"更新订单信息错误"});
+				}else{
+					if(loginArry["ID_"+doc.user]&&loginArry["ID_"+doc.user].socket){
+						loginArry["ID_"+doc.user].socket.emit("expressArrive",doc);
+					}
+					if(loginArry["ID_"+doc.shop]&&loginArry["ID_"+doc.shop].socket){
+							loginArry["ID_"+doc.shop].socket.emit("expressArrive",doc);
+					}
+				}
+			})
+		}
+	})
+}
 module.exports=express;

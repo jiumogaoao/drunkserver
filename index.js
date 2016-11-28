@@ -104,7 +104,7 @@ var initDB=function(){
       version:"0.0.0.0",
       adminType:["超级管理员"],
       expressID:[{id:"001",name:"某个快递"}],
-      expressState:["待支付","待发货","待揽件","待收货","已收货","退货"],
+      expressState:["待支付","待发货","待揽件","待收货","已收货","退货申请","待退货","退货待确认","退货成功","订单取消"],
       provinceID:[{id:"000",name:"广东"}],
       cityID:[{id:"000",name:"广州"}],
       userType:["游客","买家","卖家"]
