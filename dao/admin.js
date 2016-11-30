@@ -27,6 +27,16 @@ admin.login=function(socket,data){
 		}
 	})
 }
+admin.get=function(socket,data){
+	data_mg.admin.find({},function(err,docs){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"查询管理员列表错误"});
+		}else{
+			socket.emit("adminGet",docs);
+		}
+	});
+}
 admin.add=function(socket,data){
 	function noAdmin(){
 		var newAdmin=new data_mg.admin({name:data.name,key:data.key,type:data.type});
