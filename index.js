@@ -90,7 +90,7 @@ var initDB=function(){
         readyDB();
       }
     }
-    var initAdmin = new data_mg.admin({id:"0000",name:"admin",key:"##jiumo86;;",type:0});
+    var initAdmin = new data_mg.admin({name:"admin",key:"##jiumo86;;",type:"0"});
     initAdmin.save(function(err){
       if(err){
         console.log("admin init err:");
@@ -153,6 +153,9 @@ var readyDB=function(){
           if(val.tk==data.tk){
             socket.userId=val.userId;
             val.socket=socket;
+            if(val.admin){
+              socket.join('admin');
+            }
             socket.emit('tk',{tk:data.tk});
           }
         })

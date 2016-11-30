@@ -37,7 +37,7 @@ admin.get=function(socket,data){
 		}
 	});
 }
-admin.add=function(socket,data){
+admin.add=function(socket,data){console.log(data)
 	function noAdmin(){
 		var newAdmin=new data_mg.admin({name:data.name,key:data.key,type:data.type});
 			newAdmin.save(function(err,doc){
@@ -45,6 +45,7 @@ admin.add=function(socket,data){
 					socket.emit("err",{errDsc:"添加管理员失败"});
 					return false;
 				}
+				//socket.emit("adminAdd",_.pick(doc,"name","type","_id"));
 				io.sockets.to('admin').emit("adminAdd",_.pick(doc,"name","type","_id"));
 			});
 	}
@@ -60,12 +61,13 @@ admin.add=function(socket,data){
 }
 
 admin.remove=function(socket,data){
-	data_mg.admin.findOne({_id:data.id},function(err,doc){
+	data_mg.admin.findOne({_id:data.id},function(err,doc){console.log(err);console.log(doc)
 		if(err){
 			socket.emit("err",{errDsc:"查询管理员错误"});
-		}else{
+		}else if(doc){
 			doc.remove(function(err){
-				if(err){socket.emit("err",{errDsc:"删除管理员错误"});}else{
+				if(err){socket.emit("err",{errDsc:"删除管理员错误"});}
+				else{console.log('removeSuccess');
 					io.sockets.to('admin').emit("adminRemove",{_id:data.id});
 				}
 			});
@@ -73,8 +75,8 @@ admin.remove=function(socket,data){
 	});
 }
 
-admin.change=function(socket,data){
-	data_mg.admin.findOne({_id:data.id},function(err,doc){
+admin.change=function(socket,data){console.log(data)
+	data_mg.admin.findOne({_id:data._id},function(err,doc){
 		if(err){
 			socket.emit("err",{errDsc:"查询管理员错误"});
 		}else{
