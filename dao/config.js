@@ -1,4 +1,14 @@
 var config={}
+config.get=function(socket,data){
+	data_mg.find({},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"获取配置错误"});
+		}else{
+			socket.emit("configList",doc);
+		}
+	});
+}
 config.add=function(socket,data){
 	function noConfig(){
 		var newConfig=new data_mg.config(data);
@@ -40,7 +50,7 @@ config.versionSet=function(socket,data){
 		}else if(!doc){
 			socket.emit("err",{errDsc:"没有该版本配置"});
 		}else{
-			io.socket.emit("versionChange",doc);
+			io.socket.emit("config",doc);
 		}
 	});
 }
