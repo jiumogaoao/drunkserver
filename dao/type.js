@@ -1,7 +1,7 @@
 var type={}
 type.add=function(socket,data){
 	function noType(){
-		var newType=new data_mg.type({name:data.name,icon:data.icon,dsc:data.dsc,subType:[]});
+		var newType=new data_mg.type({name:data.name,icon:data.icon,dsc:data.dsc,subType:data.subType});
 		newType.save(function(err,doc){
 			if(err){
 				console.log(err);
@@ -33,7 +33,7 @@ type.remove=function(socket,data){
 		}
 	});
 }
-type.change=function(socket,data){
+type.change=function(socket,data){console.log(data)
 	data_mg.type.update({_id:data._id},{$set:data},function(err){
 		if(err){
 			console.log(err);
