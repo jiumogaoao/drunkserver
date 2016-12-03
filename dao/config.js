@@ -1,6 +1,6 @@
 var config={}
 config.get=function(socket,data){
-	data_mg.find({},function(err,doc){
+	data_mg.config.find({},function(err,doc){
 		if(err){
 			console.log(err);
 			socket.emit("err",{errDsc:"获取配置错误"});
@@ -12,12 +12,12 @@ config.get=function(socket,data){
 config.add=function(socket,data){
 	function noConfig(){
 		var newConfig=new data_mg.config(data);
-		data_mg.save(function(err,doc){
+		newConfig.save(function(err,doc){
 			if(err){
 				console.log(err);
 				socket.emit("err",{errDsc:"添加配置错误"});
 			}else{
-				io.socket.to("admin").emit("configAdd",doc);
+				io.sockets.to("admin").emit("configAdd",doc);
 			}
 		});
 	}
@@ -38,7 +38,7 @@ config.change=function(socket,data){
 			console.log(err);
 			socket.emit("err",{errDsc:"更新配置错误"});
 		}else{
-			io.socket.to("admin").emit("configChange",doc);
+			io.sockets.to("admin").emit("configChange",doc);
 		}
 	});
 }
@@ -50,7 +50,7 @@ config.versionSet=function(socket,data){
 		}else if(!doc){
 			socket.emit("err",{errDsc:"没有该版本配置"});
 		}else{
-			io.socket.emit("config",doc);
+			io.sockets.emit("config",doc);
 		}
 	});
 }
