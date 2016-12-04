@@ -11,6 +11,15 @@ good.add=function(socket,data){
 		}
 	});
 }
+good.get=function(socket,data){
+	data_mg.good.find({type:data.type},function(err,doc){
+		if(err){
+			socket.emit("err",{errDsc:"获取商品错误"});
+		}else{
+			socket.emit("good",doc);
+		}
+	});
+}
 good.change=function(socket,data){
 	data_mg.good.update({_id:data._id,shop:socket.userId},{$set:data},function(err,doc){
 		if(err){

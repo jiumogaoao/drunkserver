@@ -155,6 +155,8 @@ var readyDB=function(){
             val.socket=socket;
             if(val.admin){
               socket.join('admin');
+            }else{
+              socket.join('user');
             }
             socket.emit('tk',{tk:data.tk});
           }
@@ -163,5 +165,5 @@ var readyDB=function(){
    });
    
 }
-	emptyDB();
-  //showDB();
+	//emptyDB();
+  showDB();
