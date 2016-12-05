@@ -155,10 +155,12 @@ var readyDB=function(){
             val.socket=socket;
             if(val.admin){
               socket.join('admin');
+              socket.emit('tk',{tk:data.tk});
             }else{
               socket.join('user');
+              socket.emit('tk',{tk:data.tk,user:val.user});
             }
-            socket.emit('tk',{tk:data.tk});
+            
           }
         })
      } );

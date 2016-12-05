@@ -10,11 +10,11 @@ user.regest=function(socket,data){
 			}else{
 				socket.userId=doc["_id"];
 				var tk=tool.uuid();
-				loginArry["ID_"+doc["_id"]]={socket:socket,tk:tk,userId:doc["_id"],type:doc.type,admin:false};
 				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				loginArry["ID_"+doc["_id"]]={socket:socket,tk:tk,userId:doc["_id"],type:doc.type,admin:false,user:docA};
 				socket.join('user');
 				socket.emit("regest",docA);
-				socket.emit('tk',{tk:tk});
+				socket.emit('tk',{tk:tk,user:docA});
 			}
 		});
 	}
@@ -43,16 +43,17 @@ user.login=function(socket,data){
 					delete loginArry["ID_"+doc["_id"]].socket.userId;
 				}
 				var tk=tool.uuid();
+				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
 				loginArry["ID_"+doc["_id"]]={};
 				loginArry["ID_"+doc["_id"]].socket=socket;
 				loginArry["ID_"+doc["_id"]].tk=tk;
 				loginArry["ID_"+doc["_id"]].type=doc.type;
 				loginArry["ID_"+doc["_id"]].userId=doc["_id"];
 				loginArry["ID_"+doc["_id"]].admin=false;
-				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				loginArry["ID_"+doc["_id"]].user=docA;
 				socket.join('user');
 				socket.emit("login",docA);
-				socket.emit('tk',{tk:tk});
+				socket.emit('tk',{tk:tk,user:docA});
 			}else{
 				socket.emit("err",{errDsc:"用户名或密码错误"});
 			}
@@ -91,6 +92,23 @@ user.recharge=function(socket,data){
 			}
 			socket.emit("balance",{balance:doc.balance});
 		});
+	});
+}
+user.change=function(socket,data){
+	if(!socket.userId){
+		socket.emit("err",{errDsc:"请先登录"});
+		return false;
+	}
+	data_mg.user.update({"_id":socket.userId},{$set:data},function(err,doc){
+		if(err){
+			console.log(err);
+			socket.emit("err",{errDsc:"修改用户信息失败"});
+			return false;
+		}else{
+			var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+			loginArry["ID_"+doc["_id"]].user=docA;
+			socket.emit('tk',{tk:loginArry["ID_"+doc["_id"]].tk,user:docA});
+		}
 	});
 }
 module.exports=user;
