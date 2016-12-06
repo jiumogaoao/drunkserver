@@ -38,4 +38,13 @@ good.remove=function(socket,data){
 		}
 	});
 }
+good.search=function(socket,data){
+	data_mg.good.find({_id:{$in:data}},function(err,doc){
+		if(err){
+			socket.emit("err",{errDsc:"查询商品错误"});
+		}else{
+			socket.emit("goodSearch",doc);
+		}
+	});
+}
 module.exports=good;

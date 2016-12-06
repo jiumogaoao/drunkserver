@@ -5,7 +5,7 @@ express.addShoppingCart=function(socket,data){
 			console.log(err);
 			socket.emit("err",{errDsc:"获取用户信息错误"});
 		}else{
-			doc.shoppingCart=_.uniq(doc.shoppingCart.push(data._id));
+			doc.shoppingCart=_.uniq(doc.shoppingCart.push({_id:data._id,shop:data.shop}));
 			doc.save(function(errA,docA){
 				if(errA){
 					console.log(errA);
@@ -23,7 +23,7 @@ express.removeShoppingCart=function(socket,data){
 			console.log(err);
 			socket.emit("err",{errDsc:"获取用户信息错误"});
 		}else{
-			doc.shoppingCart=_.without(doc.shoppingCart,data._id);
+			doc.shoppingCart=_.without(doc.shoppingCart,{_id:data._id});
 			doc.save(function(errA,docA){
 				if(errA){
 					console.log(errA);
