@@ -7,7 +7,7 @@ var MemberSchema = new mongoose.Schema({
 	photo:Array,
 	dsc:String,
 	detail:String,
-	count:Number,
+	overplus:Number,
 	price:Number,
 	type:String,
 	subType:String,
