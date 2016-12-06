@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var MemberSchema = new mongoose.Schema({
 	shop:String,
+	shopName:String,
 	name:String,
 	icon:String,
 	photo:Array,
