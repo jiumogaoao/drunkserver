@@ -159,6 +159,13 @@ var readyDB=function(){
             }else{
               socket.join('user');
               socket.emit('tk',{tk:data.tk,user:val.user});
+              data_mg.express.find({$or:[{user:socket.userId},{shop:socket.userId}]},function(err.doc){
+                if(err){
+                  socket.emit("err",{errDsc:"获取交易信息错误"});
+                }else{
+                  socket.emit("express",docs);
+                }
+              })
             }
             
           }
