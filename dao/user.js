@@ -10,7 +10,7 @@ user.regest=function(socket,data){
 			}else{
 				socket.userId=doc["_id"];
 				var tk=tool.uuid();
-				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				var docA=_.pick(doc,"_id","userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
 				loginArry["ID_"+doc["_id"]]={socket:socket,tk:tk,userId:doc["_id"],type:doc.type,admin:false,user:docA};
 				socket.join('user');
 				socket.emit("regest",docA);
@@ -43,7 +43,7 @@ user.login=function(socket,data){
 					delete loginArry["ID_"+doc["_id"]].socket.userId;
 				}
 				var tk=tool.uuid();
-				var docA=_.pick(doc,"userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
+				var docA=_.pick(doc,"_id","userName","name","phone","icon","background","dsc","sex","provinceID","cityID","birthday","email","place","type","balance","balanceList","shoppingCart","buyList");
 				loginArry["ID_"+doc["_id"]]={};
 				loginArry["ID_"+doc["_id"]].socket=socket;
 				loginArry["ID_"+doc["_id"]].tk=tk;
